@@ -13,6 +13,7 @@ function ActivityPage() {
 
     const handleNextClick =() => {
         navigate("/travel");
+
     }
 
     return(
