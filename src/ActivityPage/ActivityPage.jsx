@@ -12,7 +12,7 @@ function ActivityPage() {
     }
 
     const handleNextClick =() => {
-        navigate("/login");
+        navigate("/travel");
     }
 
     return(
