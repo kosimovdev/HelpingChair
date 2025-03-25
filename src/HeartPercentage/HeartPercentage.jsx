@@ -18,23 +18,22 @@ function HeartPercentage() {
 
    return (
        <div className={"heart"}>
-           {/*<h1 className={"font-bold mb-5"}>길벗이</h1>*/}
-           <div className="flex flex-col items-center justify-center">
-               <div className="bg-white p-6 rounded-2xl shadow-lg w-80 text-center">
-                   <h1 className="text-xl font-bold">심박수</h1>
+           <div className="flex flex-col m-auto items-center justify-center HeartMainDiv">
+               <div className="w-full h-full bg-white p-6 rounded-2xl shadow-lg text-center">
+                   <h1 className="text-[60px] font-bold">심박수</h1>
                    <div className="relative flex items-center  m-auto mt-4">
                        <div>
-                           <button onClick={handlePreviousClick} className="flex items-center justify-center rounded-full m-auto w-[40px] h-[40px] bg-[#E2E2E2]"><img className={"w-[20px]"} src={previous} alt="previousLogo"/></button>
+                           <button onClick={handlePreviousClick} className="flex items-center justify-center rounded-full m-auto w-[80px] h-[80px] bg-[#E2E2E2]"><img className={"w-[40px]"} src={previous} alt="previousLogo"/></button>
                        </div>
-                       <div className="w-32 h-32 bg-green-300 rounded-full m-auto flex items-center justify-center border-4 border-green-600">
-                           <span className="text-2xl font-bold text-green-700">{bpm}</span>
+                       <div className="w-[250px] h-[250px] bg-[#E2FBD7] rounded-full m-auto flex items-center justify-center border-[15px] border-green-600">
+                           <span className="text-[50px] font-bold text-green-700">{bpm}</span>
                        </div>
                        <div>
-                           <button onClick={handleNextClick} className="flex items-center justify-center rounded-full m-auto w-[40px] h-[40px] bg-[#E2E2E2]"><img className={"w-[20px]"} src={nextLogo} alt="previousLogo"/></button>
+                           <button onClick={handleNextClick} className="flex items-center justify-center rounded-full m-auto w-[80px] h-[80px] bg-[#E2E2E2]"><img className={"w-[40px]"} src={nextLogo} alt="previousLogo"/></button>
                        </div>
                    </div>
-                   <p className="mt-4 flex items-center text-black">
-                       <span className="w-4 h-4 bg-green-600 rounded-full inline-block mr-2"></span> BPM
+                   <p className="mt-[40px] flex items-center text-black text-[35px]">
+                       <span className="w-[20px] h-[20px] bg-green-600 rounded-full inline-block mr-2"></span> BPM
                    </p>
                </div>
            </div>
