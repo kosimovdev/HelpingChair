@@ -2,6 +2,7 @@ import {useState} from "react";
 import previous from "../assets/next.svg";
 import nextLogo from "../assets/nextLogo.svg";
 import {useNavigate} from "react-router-dom";
+import "./index.scss";
 
 function ActivityPage() {
     const [bpm, setBpm] = useState(0);
@@ -19,7 +20,7 @@ function ActivityPage() {
     return(
         <>
             <div className="activity">
-                <div className="flex flex-col items-center justify-center activityMainDiv">
+                <div className="activityMainDiv flex flex-col items-center justify-center ">
                     <div className="w-full h-full bg-white pl-[10px] pr-[10px] pt-[10px] rounded-2xl shadow-lg text-center">
                         <h1 className="text-[60px] font-bold text black">활동시간</h1>
                         <div className="relative flex items-center  m-auto ">
@@ -38,7 +39,6 @@ function ActivityPage() {
                                 시작
                             </button>
                             <button className="w-[100px] h-[100px] bg-[#ffffff] border-2 border-[#E2E2E2] rounded-full text-[#E2E2E2] text-[35px]">
-
                                 종료
                             </button>
                         </div>
