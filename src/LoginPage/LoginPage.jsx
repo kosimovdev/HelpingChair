@@ -1,39 +1,32 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import user from "../services/Auth/Auth.jsx";
 import "./LoginStyle.scss";
+import {useNavigate} from "react-router-dom";
 
 
 export default function login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [userId, setUserId] = useState("");
+    const [contact, setContact] = useState("");
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true); // Loading holati
-    console.log(localStorage.getItem("userToken"));
+    const navigate = useNavigate();
 
-
-
-
-
-    const handleLogin = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
-        setError(null)
-        setLoading(true)
-
-
-        try {
-            const response = await user.login({email, password});
-            console.log("Login muvaffaqiyatli", response.data);
-            localStorage.setItem("userToken", response.data.token);
-            console.log("Konsolda token:", localStorage.getItem("userToken"));
-            alert("Login muvaffaqiyatli");
-        } catch (err) {
-            setError("Login xatosi: Email yoki parol noto‘g‘ri!")
-            console.error(err)
-        } finally {
-            setLoading(false)
+        user.login({ userId, contact })
+            .then(res => {
+                if (res.status === 200) {
+                    localStorage.setItem('isLoggedIn', 'true'); // Faqat frontend holati
+                    navigate('/');
+                }
+            });
+        if (userId === "admin" && contact === "123456") { // Frontendda tekshirish
+            localStorage.setItem('userId', userId); // Token o'rniga userId saqlash
+            navigate('/');
+        } else {
+            setError("Login failed");
         }
-
-    }
+    };
 
     return (
         <>
@@ -48,14 +41,13 @@ export default function login() {
                         <div>
                             <div className="mt-2">
                                 <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
+                                    id="userId"
+                                    name="userId"
+                                    type="text"
                                     required
-                                    autoComplete="email"
                                     placeholder="아이디"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={userId}
+                                    onChange={(e) => setUserId(e.target.value)}
                                     className="block w-full h-[50px] rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />
                             </div>
@@ -67,12 +59,12 @@ export default function login() {
                             </div>
                             <div className="mt-2">
                                 <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
+                                    id="contact"
+                                    name="contact"
+                                    type="tel"
                                     required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={contact}
+                                    onChange={(e) => setContact(e.target.value)}
                                     autoComplete="current-password"
 
                                     placeholder="핸드폰번호"

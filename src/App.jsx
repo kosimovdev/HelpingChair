@@ -5,6 +5,8 @@ import ActivityPage from "./ActivityPage/ActivityPage.jsx";
 import LoginPage from "./LoginPage/LoginPage.jsx";
 import NotFound from "./NotFound/NotFound.jsx";
 import TravelDistance from "./TravelDistance/TravelDistance.jsx";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -18,6 +20,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<NotFound />} />        {/* 404 page*/}
         </Routes>
+        <ToastContainer position="top-center" />
     </>
   )
 }
