@@ -1,31 +1,23 @@
-import React, { useState} from "react";
-import user from "../services/Auth/Auth.jsx";
+import React, {useState} from "react";
 import "./LoginStyle.scss";
 import {useNavigate} from "react-router-dom";
+import storage from "../services/storage/index.js";
 
 
 export default function login() {
     const [userId, setUserId] = useState("");
     const [contact, setContact] = useState("");
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true); // Loading holati
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault();
-        user.login({ userId, contact })
-            .then(res => {
-                if (res.status === 200) {
-                    localStorage.setItem('isLoggedIn', 'true'); // Faqat frontend holati
-                    navigate('/');
-                }
-            });
-        if (userId === "admin" && contact === "123456") { // Frontendda tekshirish
-            localStorage.setItem('userId', userId); // Token o'rniga userId saqlash
-            navigate('/');
-        } else {
-            setError("Login failed");
+        if (userId && contact) {
+            storage.set("user_id", userId);
+            storage.set("contact", contact);
         }
+        return navigate("/");
     };
 
     return (
@@ -72,7 +64,7 @@ export default function login() {
                                 />
                             </div>
                         </div>
-                        { error && <p className={"text-red-500 text-center"}>{error}</p>  }
+                        {error && <p className={"text-red-500 text-center"}>{error}</p>}
                         <div>
                             <button
                                 type="submit"

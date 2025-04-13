@@ -10,6 +10,16 @@ const user = {
             console.error("API xatosi:", err);
             throw err;
         }),
+    getHeartrate: (user_id) => api.get(`/heartrate/${user_id}`)
+        .then(res => {
+            return res;
+        })
+        .catch(err => {
+            console.error("API xatosi:", err);
+            throw err;
+        }),
+
+
 };
 
 export default user;

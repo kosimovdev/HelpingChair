@@ -12,7 +12,6 @@ function App() {
 
   return (
     <>
-
         <Routes>
             <Route path="/" element={<HeartPercentage />} />
             <Route path="/activity" element={<ActivityPage />} />
