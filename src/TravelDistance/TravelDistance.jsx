@@ -1,8 +1,9 @@
 import {useState} from "react";
-import previous from "../assets/next.svg"
-import nextLogo from "../assets/nextLogo.svg"
+import previous from "../assets/previousImg.png"
+import nextLogo from "../assets/nextLogo.png"
 import {useNavigate} from "react-router-dom";
 import "./index.scss";
+
 
 
 function TravelDistance() {
@@ -13,7 +14,7 @@ function TravelDistance() {
     }
 
     const handleNextClick =() => {
-        navigate("/");
+        navigate("/camera");
     }
 
     return (

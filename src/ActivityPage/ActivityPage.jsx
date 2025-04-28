@@ -1,11 +1,13 @@
 import {useEffect, useRef, useState} from "react";
-import previous from "../assets/next.svg";
-import nextLogo from "../assets/nextLogo.svg";
+import previous from "../assets/previousImg.png";
+import nextLogo from "../assets/nextLogo.png";
 import {useNavigate} from "react-router-dom";
 import "./index.scss";
 import activityService from "../services/ActivityTime/Activitytime.jsx";
 import {toast} from "react-toastify";
 import storage from "../services/storage/index.js";
+import {useWarning} from "../context/WarningContext";
+import {getLatestObstacle} from "../services/Warning/Warning";
 
 function ActivityPage({walker_id = "walker001"}) {
     const [bpm, setBpm] = useState(0);
@@ -16,6 +18,9 @@ function ActivityPage({walker_id = "walker001"}) {
     const minutes = Math.floor(elapsedTime / 60);
     const seconds = elapsedTime % 60;
     const user_id = storage.get("user_id");
+    const walkerId = "walker001";
+    const {showWarning} = useWarning()
+    const lastObstacleId = useRef(null);
 
     const startCounting = async () => {
         if (!isCounting) {
@@ -56,19 +61,44 @@ function ActivityPage({walker_id = "walker001"}) {
 
 
     useEffect(() => {
+        
+    }, []);
+
+    useEffect(() => {
+        if (!user_id) {
+            return navigate("/login");
+        }
+        const intervalRef = setInterval(async () => {
+            try {
+                if (!user_id) return;
+
+                const data = await getLatestObstacle(user_id, walkerId);
+
+                if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
+                    lastObstacleId.current = data.obstacle_id;
+                    const obstacleClean = data.obstacle_type.replace(/[\[\]']/g, "");
+                    showWarning(obstacleClean, data.obstacle_id); // 🟢 Kontekst orqali chiqaramiz
+
+                }
+            } catch (err) {
+                console.error("Obstacle error:", err);
+            }
+        }, 3000);
+
         return () => {
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
             }
         };
-    }, []);
+    }, [user_id]);
+
 
 
     const handlePreviousClick = () => {
-        navigate(-1);
+        navigate("/");
     }
     const handleNextClick = () => {
-        navigate("/travel");
+        navigate("/map");
 
     }
 
