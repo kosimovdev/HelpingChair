@@ -1,9 +1,8 @@
 .activity {
   width: 800px;
   height: 480px;
-  background-color: greenyellow;
   .activityMainDiv {
     width: 100%;
-    height: 100%;
+    height: 480px !important;
   }
 }
