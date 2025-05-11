@@ -4,6 +4,7 @@ import nextLogo from "../assets/nextLogo.png";
 import {useNavigate} from "react-router-dom";
 import "./index.scss";
 
+
 function TravelDistance() {
     const [bpm, setBpm] = useState(100);
     const navigate = useNavigate();
@@ -58,3 +59,4 @@ function TravelDistance() {
 }
 
 export default TravelDistance;
+
