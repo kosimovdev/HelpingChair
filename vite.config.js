@@ -12,6 +12,6 @@ export default defineConfig({
         secure: false,
       },
     },
+    historyApiFallback: true, // 👈 bu qo‘shildi
   },
 });
-
