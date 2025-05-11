@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import "./App.css";
-import {Routes, Route} from "react-router-dom";
+import {HashRouter as Routes, Route} from "react-router-dom";
 
 import HeartPercentage from "./HeartPercentage/HeartPercentage.jsx";
 import ActivityPage from "./ActivityPage/ActivityPage.jsx";
