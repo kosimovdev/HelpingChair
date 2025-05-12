@@ -37,7 +37,7 @@ function HeartPercentage() {
             } catch (err) {
                 console.error("Obstacle error:", err);
             }
-        }, 3000);
+        }, 30000);
 
         return () => clearInterval(interval);
     }, [user_id]);
@@ -46,15 +46,19 @@ function HeartPercentage() {
         try {
             setLoading(true);
             const response = await user.getHeartrate(user_id);
-            if (response.data) {
-                // Optional: sort by time descending
-                console.log("response data", response.data);
+            console.log("API response:", response); // Bu yerda response to‘g‘ri kelyaptimi?
 
-                const sorted = response.data.sort((a, b) =>
-                    new Date(a.recorded_at) > new Date(b.recorded_at) ? 1 : -1
-                );
-                setBpm(sorted);
-                showWarning;
+            // Agar response.data mavjud bo‘lsa
+            if (response && response.data) {
+                console.log("BPM ma'lumotlari:", response.data);
+                if (Array.isArray(response.data)) {
+                    const sorted = response.data.sort((a, b) => new Date(b.recorded_at) - new Date(a.recorded_at));
+                    setBpm(sorted);
+                } else {
+                    console.warn("API dan kelgan ma'lumotlar noto‘g‘ri formatda:", response.data);
+                }
+            } else {
+                console.warn("BPM ma'lumotlari topilmadi");
             }
         } catch (error) {
             console.error("Heart rate olishda xatolik:", error);
@@ -62,6 +66,58 @@ function HeartPercentage() {
             setLoading(false);
         }
     };
+
+    // const getUserHeartrate = async (user_id) => {
+    //     try {
+    //         setLoading(true);
+    //         const response = await user.getHeartrate(user_id);
+
+    //         // Kelayotgan response'ni tekshir
+    //         console.log("response data", response.data);
+
+    //         // Masiv mavjudligini tekshir
+    //         const data = Array.isArray(response.data)
+    //             ? response.data
+    //             : Array.isArray(response.data.data)
+    //             ? response.data.data
+    //             : [];
+
+    //         if (data.length === 0) {
+    //             console.warn("BPM ma'lumotlari topilmadi yoki noto‘g‘ri formatda");
+    //             console.log(response.data);
+    //         }
+
+    //         const sorted = data.sort((a, b) => (new Date(a.recorded_at) > new Date(b.recorded_at) ? 1 : -1));
+
+    //         setBpm(sorted);
+    //     } catch (error) {
+    //         console.error("Heart rate olishda xatolik:", error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    // const getUserHeartrate = async (user_id) => {
+    //     try {
+    //         setLoading(true);
+    //         const response = await user.getHeartrate(user_id);
+    //         if (response.data) {
+    //             // Optional: sort by time descending
+    //             console.log("response data", response.data);
+
+    //             // const sorted = response.data.sort((a, b) =>
+    //             //     new Date(a.recorded_at) > new Date(b.recorded_at) ? 1 : -1
+    //             // );
+    //             const sorted = response.data.sort((a, b) => new Date(b.recorded_at) - new Date(a.recorded_at));
+    //             setBpm(sorted);
+    //             showWarning;
+    //         }
+    //     } catch (error) {
+    //         console.error("Heart rate olishda xatolik:", error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     useEffect(() => {
         getUserHeartrate(user_id);
