@@ -103,7 +103,7 @@ function ActivityPage({walker_id = "walker001"}) {
     }
 
     return (<>
-        <div className="activity">
+        <div className="activity mx-auto">
             <div className="activityMainDiv flex flex-col items-center justify-center ">
                 <div
                     className="w-full h-full bg-white pl-[10px] pr-[10px] pt-[10px] rounded-2xl shadow-lg text-center">

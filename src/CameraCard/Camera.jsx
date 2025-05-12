@@ -81,7 +81,7 @@ const CameraFeed = () => {
 ;
 
     return (
-        <div>
+        <div className="w-[800px] flex flex-col m-auto justify-center">
             <div className="relative">
                 {streamUrl.endsWith(".m3u8") ? (
                     <HLSPlayer streamUrl={streamUrl} />

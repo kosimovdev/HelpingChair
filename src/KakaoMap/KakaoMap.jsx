@@ -44,7 +44,7 @@ const KakaoMap = ({latitude, longitude}) => {
     };
 
     return (
-        <div>
+        <div className="w-[800px] flex flex-col justify-center mx-auto">
             <div id="kakao-map" style={{width: "100%", height: "400px", borderRadius: "8px"}}></div>
             <div className="flex items-center justify-between p-1">
                 <button
