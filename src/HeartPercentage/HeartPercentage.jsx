@@ -87,7 +87,7 @@ function HeartPercentage() {
                             onClick={handlePreviousClick}
                             className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-[#E2E2E2]"
                         >
-                            <img className={"w-[40px]"} src={previous} alt="previousLogo" />
+                            <img className={"w-[40px]"} src={previous} alt="<" />
                         </button>
 
                         <div className="mx-4 w-[300px] h-[300px] bg-[#E2FBD7] rounded-full flex items-center justify-center border-[15px] border-green-600">
@@ -103,7 +103,7 @@ function HeartPercentage() {
                             onClick={handleNextClick}
                             className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-[#E2E2E2]"
                         >
-                            <img className={"w-[40px]"} src={nextLogo} alt="nextLogo" />
+                            <img className={"w-[40px]"} src={nextLogo} alt=">" />
                         </button>
                     </div>
 
