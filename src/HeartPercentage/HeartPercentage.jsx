@@ -46,19 +46,13 @@ function HeartPercentage() {
         try {
             setLoading(true);
             const response = await user.getHeartrate(user_id);
-            console.log("API response:", response); // Bu yerda response to‘g‘ri kelyaptimi?
 
-            // Agar response.data mavjud bo‘lsa
-            if (response && response.data) {
-                console.log("BPM ma'lumotlari:", response.data);
-                if (Array.isArray(response.data)) {
-                    const sorted = response.data.sort((a, b) => new Date(b.recorded_at) - new Date(a.recorded_at));
-                    setBpm(sorted);
-                } else {
-                    console.warn("API dan kelgan ma'lumotlar noto‘g‘ri formatda:", response.data);
-                }
+            // Agar response.data to‘g‘ri formatda kelsa
+            if (Array.isArray(response.data) && response.data.length > 0) {
+                const sorted = response.data.sort((a, b) => new Date(b.recorded_at) - new Date(a.recorded_at));
+                setBpm(sorted);
             } else {
-                console.warn("BPM ma'lumotlari topilmadi");
+                console.error("BPM ma'lumotlari topilmadi yoki noto‘g‘ri formatda.");
             }
         } catch (error) {
             console.error("Heart rate olishda xatolik:", error);
