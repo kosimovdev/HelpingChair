@@ -20,6 +20,7 @@ const user = {
             console.error("API xatosi:", err);
             throw err;
         }),
+    
 };
 
 export default user;

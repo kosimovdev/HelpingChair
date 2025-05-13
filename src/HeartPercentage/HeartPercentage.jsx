@@ -42,15 +42,19 @@ function HeartPercentage() {
         return () => clearInterval(interval);
     }, [user_id]);
 
+
     const getUserHeartrate = async (user_id) => {
         try {
             setLoading(true);
-            const response = await user.getHeartrate(user_id);
+            const bpmData = await user.getHeartrate(user_id);
+            // const bpmData = response.data;
+            console.log("bpm data", bpmData)
 
-            // Agar response.data to‘g‘ri formatda kelsa
-            if (Array.isArray(response.data) && response.data.length > 0) {
-                const sorted = response.data.sort((a, b) => new Date(b.recorded_at) - new Date(a.recorded_at));
-                setBpm(sorted);
+            console.log("BPM API response:", bpmData);
+
+            if (Array.isArray(bpmData) && bpmData.length > 0) {
+                // const sorted = bpmData.sort((a, b) => new Date(b.recorded_at) - new Date(a.recorded_at));
+                setBpm(bpmData);
             } else {
                 console.error("BPM ma'lumotlari topilmadi yoki noto‘g‘ri formatda.");
             }
@@ -60,58 +64,6 @@ function HeartPercentage() {
             setLoading(false);
         }
     };
-
-    // const getUserHeartrate = async (user_id) => {
-    //     try {
-    //         setLoading(true);
-    //         const response = await user.getHeartrate(user_id);
-
-    //         // Kelayotgan response'ni tekshir
-    //         console.log("response data", response.data);
-
-    //         // Masiv mavjudligini tekshir
-    //         const data = Array.isArray(response.data)
-    //             ? response.data
-    //             : Array.isArray(response.data.data)
-    //             ? response.data.data
-    //             : [];
-
-    //         if (data.length === 0) {
-    //             console.warn("BPM ma'lumotlari topilmadi yoki noto‘g‘ri formatda");
-    //             console.log(response.data);
-    //         }
-
-    //         const sorted = data.sort((a, b) => (new Date(a.recorded_at) > new Date(b.recorded_at) ? 1 : -1));
-
-    //         setBpm(sorted);
-    //     } catch (error) {
-    //         console.error("Heart rate olishda xatolik:", error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-
-    // const getUserHeartrate = async (user_id) => {
-    //     try {
-    //         setLoading(true);
-    //         const response = await user.getHeartrate(user_id);
-    //         if (response.data) {
-    //             // Optional: sort by time descending
-    //             console.log("response data", response.data);
-
-    //             // const sorted = response.data.sort((a, b) =>
-    //             //     new Date(a.recorded_at) > new Date(b.recorded_at) ? 1 : -1
-    //             // );
-    //             const sorted = response.data.sort((a, b) => new Date(b.recorded_at) - new Date(a.recorded_at));
-    //             setBpm(sorted);
-    //             showWarning;
-    //         }
-    //     } catch (error) {
-    //         console.error("Heart rate olishda xatolik:", error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
 
     useEffect(() => {
         getUserHeartrate(user_id);
@@ -142,6 +94,9 @@ function HeartPercentage() {
                             <span className="text-[60px] font-bold text-green-700">
                                 {loading ? "Loading..." : bpm?.[bpm.length - 1]?.heartrate ?? "N/A"}
                             </span>
+                            {/* <span className="text-[60px] font-bold text-green-700">
+                                {loading ? "Loading..." : bpm ?? "N/A"}
+                            </span> */}
                         </div>
 
                         <button
