@@ -37,7 +37,7 @@ function HeartPercentage() {
             } catch (err) {
                 console.error("Obstacle error:", err);
             }
-        }, 30000);
+        }, 30000000);
 
         return () => clearInterval(interval);
     }, [user_id]);
