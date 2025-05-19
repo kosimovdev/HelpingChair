@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {WarningProvider} from "./context/WarningContext.jsx";
 import GlobalWarningModal from "./GlobalModal/GlobalModal.jsx";
 import KakaoMap from "./KakaoMap/KakaoMap.jsx";
+import UsersList from "./UsersList/userList.jsx";
 
 function App() {
     // const [latitude, setLatitude] = useState(null);
@@ -48,6 +49,7 @@ function App() {
                     <Route path="/map" element={<KakaoMap />} />
                     {/* <Route path="/map" element={<KakaoMap latitude={latitude} longitude={longitude} />} /> */}
                     <Route path="/camera" element={<CameraCard />} />
+                    <Route path="/users" element={<UsersList />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="*" element={<NotFound />} /> {/* 404 page*/}
                 </Routes>
