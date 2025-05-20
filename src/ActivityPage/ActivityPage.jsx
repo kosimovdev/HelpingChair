@@ -94,7 +94,7 @@ function ActivityPage({walker_id = "walker001"}) {
         navigate("/");
     };
     const handleNextClick = () => {
-        navigate("/camera");
+        navigate("/map");
     };
 
     return (
