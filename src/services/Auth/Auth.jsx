@@ -3,7 +3,7 @@ import api from "../axios.js";
 const user = {
     login: (data) =>
         api
-        .get("/users/", {params: data})
+        .get("/api/users/", {params: data})
         .then((res) => {
             console.log("apidan kelgan malumot", res.data);
             return res;
@@ -14,7 +14,7 @@ const user = {
         }),
     getHeartrate: (user_id) =>
         api
-        .get(`/heartrate/${user_id}`)
+        .get(`/api/heartrate/${user_id}`)
         .then((res) => res.data) // Faqat data massivini qaytaradi
         .catch((err) => {
             console.error("API xatosi:", err);
