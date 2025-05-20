@@ -44,12 +44,12 @@ function App() {
         <>
             <WarningProvider>
                 <Routes>
-                    <Route path="/heart" element={<HeartPercentage />} />
+                    <Route path="/" element={<HeartPercentage />} />
                     <Route path="/activity" element={<ActivityPage />} />
                     <Route path="/map" element={<KakaoMap />} />
                     {/* <Route path="/map" element={<KakaoMap latitude={latitude} longitude={longitude} />} /> */}
                     <Route path="/camera" element={<CameraCard />} />
-                    <Route path="/" element={<UsersList />} />
+                    <Route path="/users" element={<UsersList />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="*" element={<NotFound />} /> {/* 404 page*/}
                 </Routes>
