@@ -81,7 +81,7 @@ function HeartPercentage() {
         <div className={""}>
             <div className="flex flex-col m-auto items-center justify-center HeartMainDiv">
                 <div className="w-full max-w-4xl bg-white px-6 rounded-2xl shadow-lg text-center">
-                    <h1 className="text-[60px] font-bold">심박수 123</h1>
+                    <h1 className="text-[60px] font-bold">심박수</h1>
                     <div className="relative flex items-center justify-between mt-6 mb-4">
                         <button
                             onClick={handlePreviousClick}
