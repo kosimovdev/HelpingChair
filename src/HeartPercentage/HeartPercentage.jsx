@@ -42,13 +42,12 @@ function HeartPercentage() {
         return () => clearInterval(interval);
     }, [user_id]);
 
-
     const getUserHeartrate = async (user_id) => {
         try {
             setLoading(true);
             const bpmData = await user.getHeartrate(user_id);
             // const bpmData = response.data;
-            console.log("bpm data", bpmData)
+            console.log("bpm data", bpmData);
 
             console.log("BPM API response:", bpmData);
 
