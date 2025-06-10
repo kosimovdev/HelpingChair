@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from "react";
-import previous from "../assets/previousImg.png";
-import nextLogo from "../assets/nextLogo.png";
+// import previous from "../assets/previousImg.png";
+// import nextLogo from "../assets/nextLogo.png";
 import {useNavigate} from "react-router-dom";
 import "./index.scss";
 import activityService from "../services/ActivityTime/Activitytime.jsx";
@@ -109,7 +109,7 @@ function ActivityPage({walker_id = "walker001"}) {
                                     onClick={handlePreviousClick}
                                     className="flex items-center justify-center rounded-full m-auto w-[80px] h-[80px] bg-[#E2E2E2]"
                                 >
-                                    <img className={"w-[40px]"} src={previous} alt="previousLogo" />
+                                    <img className="w-[40px]" src="/images/previousImg.png" alt="previous" />
                                 </button>
                             </div>
                             <div className="w-[250px] h-[250px] bg-[#CCF8FE] rounded-full m-auto flex items-center justify-center border-[15px] border-[#02A0FC]">
@@ -123,7 +123,7 @@ function ActivityPage({walker_id = "walker001"}) {
                                     onClick={handleNextClick}
                                     className="flex items-center justify-center rounded-full m-auto w-[80px] h-[80px] bg-[#E2E2E2]"
                                 >
-                                    <img className={"w-[40px]"} src={nextLogo} alt="previousLogo" />
+                                    <img className="w-[40px]" src="/images/nextLogo.png" alt="next" />
                                 </button>
                             </div>
                         </div>

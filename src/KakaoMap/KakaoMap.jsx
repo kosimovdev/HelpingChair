@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import previous from "../assets/previousImg.png";
-import nextLogo from "../assets/nextLogo.png";
+// import previous from "../assets/previousImg.png";
+// import nextLogo from "../assets/nextLogo.png";
 
 const KakaoMapRedirect = () => {
     const mapRef = useRef(null); // DOM element uchun ref
@@ -87,13 +87,13 @@ const KakaoMapRedirect = () => {
                         onClick={handlePreviousClick}
                         className="flex items-center justify-center rounded-full w-[70px] h-[70px] bg-[#E2E2E2]"
                     >
-                        <img className={"w-[40px]"} src={previous} alt="previousLogo" />
+                        <img className="w-[40px]" src="/images/previousImg.png" alt="previous" />
                     </button>
                     <button
                         onClick={handleNextClick}
                         className="flex items-center justify-center rounded-full w-[70px] h-[70px] bg-[#E2E2E2]"
                     >
-                        <img className={"w-[40px]"} src={nextLogo} alt="nextLogo" />
+                        <img className="w-[40px]" src="/images/nextLogo.png" alt="next" />
                     </button>
                 </div>
             </div>
