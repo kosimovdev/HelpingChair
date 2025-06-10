@@ -47,6 +47,7 @@ function HeartPercentage() {
                 setBpm(bpmData);
                 console.log(bpmData);
                 console.log("Eng oxirgi BPM ma'lumot:", bpmData[0]);
+                console.log("API URL: ", import.meta.env.VITE_API_URL);
             } else {
                 console.error("BPM ma'lumotlari topilmadi yoki noto‘g‘ri formatda.");
             }
