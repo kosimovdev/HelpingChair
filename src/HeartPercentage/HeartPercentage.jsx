@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import "./index.scss";
-import previous from "../assets/previousImg.png";
+import previousImg from "../assets/previousImg.png";
 import nextLogo from "../assets/nextLogo.png";
 import {useNavigate} from "react-router-dom";
 import storage from "../services/storage/index.js";
@@ -76,7 +76,8 @@ function HeartPercentage() {
                             onClick={handlePreviousClick}
                             className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-[#E2E2E2]"
                         >
-                            <img className={"w-[40px]"} src={previous} alt="<" />
+                            {/* <img className={"w-[40px]"} src={previousImg} alt="myImage" /> */}
+                            <img className="w-[40px]" src="/images/previousImg.png" alt="previous" />
                         </button>
 
                         <div className="mx-4 w-[300px] h-[300px] bg-[#E2FBD7] rounded-full flex items-center justify-center border-[15px] border-green-600">
@@ -89,7 +90,8 @@ function HeartPercentage() {
                             onClick={handleNextClick}
                             className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-[#E2E2E2]"
                         >
-                            <img className={"w-[40px]"} src={nextLogo} alt=">" />
+                            {/* <img className={"w-[40px]"} src={nextLogo} alt="myImage" /> */}
+                            <img className="w-[40px]" src="/images/nextLogo.png" alt="next" />
                         </button>
                     </div>
 
