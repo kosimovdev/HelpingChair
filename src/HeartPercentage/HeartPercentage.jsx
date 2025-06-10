@@ -65,7 +65,7 @@ function HeartPercentage() {
     const handleNextClick = () => navigate("/activity");
 
     return (
-        <div className={""}>
+        <div className={"heart m-auto"}>
             <div className="flex flex-col m-auto items-center justify-center HeartMainDiv">
                 <div className="w-full max-w-4xl bg-white px-6 rounded-2xl shadow-lg text-center">
                     <h1 className="text-[60px] font-bold">심박수</h1>

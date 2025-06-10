@@ -24,7 +24,6 @@ const CameraFeed = () => {
                 const data = await getLatestObstacle(userId, walkerId);
                 console.log("xavf aniqlandi", data.is_detected);
                 if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
-                    
                     lastObstacleId.current = data.obstacle_id;
                     const obstacleClean = data.obstacle_type.replace(/[\[\]']/g, "");
                     showWarning(obstacleClean, data.obstacle_id);
@@ -38,7 +37,7 @@ const CameraFeed = () => {
     }, [userId, walkerId, showWarning]);
 
     const handlePreviousClick = () => navigate("/map");
-    const handleNextClick = () => navigate("/login");
+    const handleNextClick = () => navigate("/");
 
     return (
         <div className="w-full max-w-[800px] flex flex-col m-auto justify-center">
