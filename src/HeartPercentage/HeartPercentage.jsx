@@ -41,25 +41,51 @@ function HeartPercentage() {
 
         return () => clearInterval(interval);
     }, [user_id]);
-
+     
     const getUserHeartrate = async (user_id) => {
         try {
             setLoading(true);
             const bpmData = await user.getHeartrate(user_id);
             console.log("BPM data:", bpmData);
-            if (Array.isArray(bpmData) && bpmData.length > 0) {
-                setBpm(bpmData);
-                console.log(bpmData);
-                console.log("Eng oxirgi BPM ma'lumot:", bpmData[0]);
+
+            if (Array.isArray(bpmData)) {
+                if (bpmData.length > 0) {
+                    setBpm(bpmData);
+                } else {
+                    console.warn("BPM array bo‘sh");
+                    setBpm([]);
+                }
             } else {
-                console.error("BPM ma'lumotlari topilmadi yoki noto‘g‘ri formatda.");
+                console.error("BPM ma'lumotlari array formatida emas.");
+                setBpm([]);
             }
         } catch (error) {
             console.error("Heart rate olishda xatolik:", error);
+            setBpm([]);
         } finally {
             setLoading(false);
         }
     };
+      
+
+    // const getUserHeartrate = async (user_id) => {
+    //     try {
+    //         setLoading(true);
+    //         const bpmData = await user.getHeartrate(user_id);
+    //         console.log("BPM data:", bpmData);
+    //         if (Array.isArray(bpmData) && bpmData.length > 0) {
+    //             setBpm(bpmData);
+    //             console.log(bpmData);
+    //             console.log("Eng oxirgi BPM ma'lumot:", bpmData[0]);
+    //         } else {
+    //             console.error("BPM ma'lumotlari topilmadi yoki noto‘g‘ri formatda.");
+    //         }
+    //     } catch (error) {
+    //         console.error("Heart rate olishda xatolik:", error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     useEffect(() => {
         getUserHeartrate(user_id);

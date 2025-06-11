@@ -1,7 +1,10 @@
 import api from "../axios.js";
 
 const user = {
-    getHeartrate: (userId) => api.get(`/api/heartrate/${userId}`),
+    getHeartrate: async (userId) => {
+        const response = await api.get(`/api/heartrate/${userId}`);
+        return response.data; // Faqat data ni qaytaramiz
+    },
 };
 
 export default user;
