@@ -80,35 +80,35 @@ const KakaoMapRedirect = () => {
     };
 
     return (
-        <div className="relative w-full h-[480px]">
+        <div className="relative w-full h-[800px]">
             <div className="absolute w-full z-10 top-[45%]">
-                <div className="flex items-center justify-between p-1">
+                <div className="flex items-center justify-between p-2">
                     <button
                         onClick={handlePreviousClick}
-                        className="flex items-center justify-center rounded-full w-[70px] h-[70px] bg-[#E2E2E2]"
+                        className="flex items-center justify-center rounded-full w-[100px] h-[100px] bg-[#E2E2E2]"
                     >
-                        <img className="w-[40px]" src="/images/previousImg.png" alt="previous" />
+                        <img className="w-[60px]" src="/images/previousImg.png" alt="previous" />
                     </button>
                     <button
                         onClick={handleNextClick}
-                        className="flex items-center justify-center rounded-full w-[70px] h-[70px] bg-[#E2E2E2]"
+                        className="flex items-center justify-center rounded-full w-[100px] h-[100px] bg-[#E2E2E2]"
                     >
-                        <img className="w-[40px]" src="/images/nextLogo.png" alt="next" />
+                        <img className="w-[60px]" src="/images/nextLogo.png" alt="next" />
                     </button>
                 </div>
             </div>
             {/* Inputlar */}
-            <div className="absolute top-4 left-1/2 h-[70px] -translate-x-1/2 bg-white shadow-md rounded p-2 z-10 w-[90%] flex gap-2 items-center">
+            <div className="absolute top-4 left-1/2 h-[80px] -translate-x-1/2 bg-white shadow-md rounded p-2 z-10 w-[90%] flex gap-2 items-center">
                 <input
                     type="text"
                     placeholder="장소*주소*버스 검색 "
                     value={endAddress}
                     onChange={(e) => setEndAddress(e.target.value)}
-                    className="border p-2 rounded w-full"
+                    className="border p-2 rounded w-full h-[50px]"
                 />
                 <button
                     onClick={openKakaoMap}
-                    className="w-[80px] bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    className="w-[100px] h-[50px] bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
                     길찾기
                 </button>

@@ -80,7 +80,7 @@ function HeartPercentage() {
                             <img className="w-[60px]" src="/images/previousImg.png" alt="previous" />
                         </button>
 
-                        <div className="mx-4 w-[400px] h-[400px] bg-[#E2FBD7] rounded-full flex items-center justify-center border-[15px] border-green-600">
+                        <div className="mx-4 w-[400px] h-[400px] bg-[#E2FBD7] rounded-full flex items-center justify-center border-[20px] border-green-600">
                             <span className="text-[80px] font-bold text-green-700">
                                 {loading ? "Loading..." : bpm?.[0]?.heartrate ?? "N/A"}
                             </span>
@@ -88,22 +88,22 @@ function HeartPercentage() {
 
                         <button
                             onClick={handleNextClick}
-                            className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-[#E2E2E2]"
+                            className="flex items-center justify-center rounded-full w-[100px] h-[100px] bg-[#E2E2E2]"
                         >
                             {/* <img className={"w-[40px]"} src={nextLogo} alt="myImage" /> */}
-                            <img className="w-[40px]" src="/images/nextLogo.png" alt="next" />
+                            <img className="w-[60px]" src="/images/nextLogo.png" alt="next" />
                         </button>
                     </div>
 
-                    <p className="mt-[30px] text-black text-[45px] text-left">
-                        <span className="w-[30px] h-[30px] bg-green-600 rounded-full inline-block mr-2"></span> BPM
+                    <p className="mt-[50px] text-black text-[45px] text-left">
+                        <span className="w-[40px] h-[40px] bg-green-600 rounded-full inline-block mr-2"></span> BPM
                     </p>
 
                     {/* 🔘 Chartni ko‘rsatish tugmasi */}
-                    <div className="relative top-[-160px] left-0">
+                    <div className="relative top-[-320px] left-0">
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="absolute top-[-300px] left-[10px] px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition"
+                            className="absolute top-[-300px] left-[10px] w-[220px] h-[60px] px-3 py-3 bg-green-600 text-white text-[20px] rounded-xl hover:bg-green-700 transition"
                         >
                             📈 심박수 그래프 보기
                         </button>

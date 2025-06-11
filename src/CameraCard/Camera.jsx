@@ -40,24 +40,24 @@ const CameraFeed = () => {
     const handleNextClick = () => navigate("/");
 
     return (
-        <div className="w-full max-w-[800px] flex flex-col m-auto justify-center">
-            <div className="flex justify-between gap-4">
-                <MJPEGPlayer streamUrl={streamUrl1} />
-                <MJPEGPlayer streamUrl={streamUrl2} />
+        <div className="w-[1280px] h-[800px] flex flex-col m-auto justify-center">
+            <div className="flex justify-between gap-4 px-2">
+                <MJPEGPlayer  streamUrl={streamUrl1} />
+                <MJPEGPlayer  streamUrl={streamUrl2} />
             </div>
 
             <div className="flex items-center justify-between p-1 mt-4">
                 <button
                     onClick={handlePreviousClick}
-                    className="flex items-center justify-center rounded-full w-[70px] h-[70px] bg-[#E2E2E2]"
+                    className="flex items-center justify-center rounded-full w-[100px] h-[100px] bg-[#E2E2E2]"
                 >
-                    <img className="w-[40px]" src="/images/previousImg.png" alt="previous" />
+                    <img className="w-[60px]" src="/images/previousImg.png" alt="previous" />
                 </button>
                 <button
                     onClick={handleNextClick}
-                    className="flex items-center justify-center rounded-full w-[70px] h-[70px] bg-[#E2E2E2]"
+                    className="flex items-center justify-center rounded-full w-[100px] h-[100px] bg-[#E2E2E2]"
                 >
-                    <img className="w-[40px]" src="/images/nextLogo.png" alt="next" />
+                    <img className="w-[60px]" src="/images/nextLogo.png" alt="next" />
                 </button>
             </div>
         </div>
