@@ -69,19 +69,19 @@ function HeartPercentage() {
         <div className={"heart m-auto"}>
             <div className="flex flex-col items-center justify-center HeartMainDiv">
                 <div className="w-full bg-white px-6 rounded-2xl shadow-lg text-center">
-                    <h1 className="text-[60px] font-bold">심박수</h1>
+                    <h1 className="text-[80px] font-bold">심박수</h1>
 
                     <div className="relative flex items-center justify-between mt-6 mb-4">
                         <button
                             onClick={handlePreviousClick}
-                            className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-[#E2E2E2]"
+                            className="flex items-center justify-center rounded-full w-[100px] h-[100px] bg-[#E2E2E2]"
                         >
                             {/* <img className={"w-[40px]"} src={previousImg} alt="myImage" /> */}
-                            <img className="w-[40px]" src="/images/previousImg.png" alt="previous" />
+                            <img className="w-[60px]" src="/images/previousImg.png" alt="previous" />
                         </button>
 
-                        <div className="mx-4 w-[300px] h-[300px] bg-[#E2FBD7] rounded-full flex items-center justify-center border-[15px] border-green-600">
-                            <span className="text-[60px] font-bold text-green-700">
+                        <div className="mx-4 w-[400px] h-[400px] bg-[#E2FBD7] rounded-full flex items-center justify-center border-[15px] border-green-600">
+                            <span className="text-[80px] font-bold text-green-700">
                                 {loading ? "Loading..." : bpm?.[0]?.heartrate ?? "N/A"}
                             </span>
                         </div>
@@ -95,8 +95,8 @@ function HeartPercentage() {
                         </button>
                     </div>
 
-                    <p className="mt-[20px] text-black text-[35px] text-left">
-                        <span className="w-[20px] h-[20px] bg-green-600 rounded-full inline-block mr-2"></span> BPM
+                    <p className="mt-[30px] text-black text-[45px] text-left">
+                        <span className="w-[30px] h-[30px] bg-green-600 rounded-full inline-block mr-2"></span> BPM
                     </p>
 
                     {/* 🔘 Chartni ko‘rsatish tugmasi */}
