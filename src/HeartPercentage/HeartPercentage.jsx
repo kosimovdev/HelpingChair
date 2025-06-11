@@ -9,6 +9,7 @@ import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAx
 import dayjs from "dayjs";
 import {useWarning} from "../context/WarningContext.jsx";
 import {getLatestObstacle} from "../services/Warning/Warning.jsx";
+import alarmAudio from "../assets/alarm.mp3";
 
 function HeartPercentage() {
     const [bpm, setBpm] = useState([]);
@@ -19,6 +20,8 @@ function HeartPercentage() {
     const walkerId = "walker001";
     const {showWarning} = useWarning();
     const lastObstacleId = useRef(null);
+
+    const audioRef = useRef(null);
 
     useEffect(() => {
         if (!user_id) return navigate("/login");
@@ -43,11 +46,11 @@ function HeartPercentage() {
         try {
             setLoading(true);
             const bpmData = await user.getHeartrate(user_id);
+            console.log("BPM data:", bpmData);
             if (Array.isArray(bpmData) && bpmData.length > 0) {
                 setBpm(bpmData);
                 console.log(bpmData);
                 console.log("Eng oxirgi BPM ma'lumot:", bpmData[0]);
-                console.log("API URL: ", import.meta.env.VITE_API_URL);
             } else {
                 console.error("BPM ma'lumotlari topilmadi yoki noto‘g‘ri formatda.");
             }
@@ -98,6 +101,24 @@ function HeartPercentage() {
                     <p className="mt-[50px] text-black text-[45px] text-left">
                         <span className="w-[40px] h-[40px] bg-green-600 rounded-full inline-block mr-2"></span> BPM
                     </p>
+                    <audio ref={audioRef} src={alarmAudio} preload="auto" />
+
+                    {/* 🎵 Audio o‘ynatish tugmasi */}
+                    <div className="mt-6 flex justify-center">
+                        <button
+                            onClick={() => {
+                                if (audioRef.current) {
+                                    audioRef.current.currentTime = 0;
+                                    audioRef.current.play().catch((err) => {
+                                        console.warn("Audio play error:", err);
+                                    });
+                                }
+                            }}
+                            className="px-6 py-3 bg-green-600 text-white rounded-xl text-xl hover:bg-green-700 transition"
+                        >
+                            ▶️ Ovoz eshittirish
+                        </button>
+                    </div>
 
                     {/* 🔘 Chartni ko‘rsatish tugmasi */}
                     <div className="relative top-[-320px] left-0">

@@ -3,14 +3,18 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  base: "/",
+  // base: "/",
   plugins: [react(), tailwindcss()],
   server: {
     host: "0.0.0.0", // 👈 boshqa qurilmalarga ochiq qilish uchun
-    port: 5173,
-    // https: {
-    //   key: fs.readFileSync(path.resolve(__dirname, "certs/localhost-key.pem")),
-    //   cert: fs.readFileSync(path.resolve(__dirname, "certs/localhost.pem")),
-    // },
+    port: 5174,
+    proxy: {
+      "/api": {
+        target: "https://0202-14-42-86-31.ngrok-free.app",
+        changeOrigin: true,
+        secure: false, // agar https bo‘lsa, bu parametr kerak bo‘lishi mumkin
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
 });
