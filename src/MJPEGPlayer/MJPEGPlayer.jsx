@@ -3,7 +3,7 @@ const MJPEGPlayer = ({streamUrl}) => {
         <img
             src={streamUrl}
             alt="Live MJPEG Stream"
-            className="w-[600px] h-[680px] object-cover rounded-2xl shadow-md"
+            className="w-[600px] h-[650px] object-cover rounded-2xl shadow-md"
         />
     );
 };
