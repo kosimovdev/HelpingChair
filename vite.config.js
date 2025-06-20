@@ -10,7 +10,7 @@ export default defineConfig({
     port: 5174,
     proxy: {
       "/api": {
-        target: "https://0202-14-42-86-31.ngrok-free.app",
+        target: "https://2e27-14-42-86-124.ngrok-free.app",
         changeOrigin: true,
         secure: false, // agar https bo‘lsa, bu parametr kerak bo‘lishi mumkin
         rewrite: (path) => path.replace(/^\/api/, ""),
