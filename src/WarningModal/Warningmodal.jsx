@@ -24,10 +24,10 @@ const WarningModal = ({obstacleType, onClose}) => {
         <div
             style={{
                 position: "fixed",
-                top: "-10px",
+                top: "0px",
                 left: 0,
                 width: "100vw",
-                height: "500px",
+                height: "100%",
                 backgroundColor: "rgba(0, 0, 0, 0.5)",
                 display: "flex",
                 justifyContent: "center",
