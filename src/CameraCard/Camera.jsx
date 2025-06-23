@@ -13,8 +13,8 @@ const CameraFeed = () => {
     const {showWarning} = useWarning();
     const navigate = useNavigate();
 
-    const streamUrl1 = "https://8fe8-14-42-86-124.ngrok-free.app/?action=stream";
-    const streamUrl2 = "https://8fe8-14-42-86-124.ngrok-free.app/?action=stream"; // yoki boshqa stream bo‘lsa, uni ham qo‘shing
+    const streamUrl1 = "https://0749-14-42-86-124.ngrok-free.app/?action=stream";
+    const streamUrl2 = "https://0749-14-42-86-124.ngrok-free.app/?action=stream"; // yoki boshqa stream bo‘lsa, uni ham qo‘shing
 
     useEffect(() => {
         const interval = setInterval(async () => {
