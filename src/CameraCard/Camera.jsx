@@ -13,7 +13,7 @@ const CameraFeed = () => {
     const {showWarning} = useWarning();
     const navigate = useNavigate();
 
-    const streamUrl1 = "https://4bc2-14-42-86-124.ngrok-free.app/video";
+    const streamUrl1 = "https://4bc2-14-42-86-124.ngrok-free.app/videooo";
     const streamUrl2 = "https://c6c6-14-42-86-124.ngrok-free.app/?action=stream"; // yoki boshqa stream bo‘lsa, uni ham qo‘shing
 
     useEffect(() => {
