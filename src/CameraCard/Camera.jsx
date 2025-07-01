@@ -13,8 +13,8 @@ const CameraFeed = () => {
     const {showWarning} = useWarning();
     const navigate = useNavigate();
 
-    const streamUrl1 = "https://0749-14-42-86-124.ngrok-free.app/?action=stream";
-    const streamUrl2 = "https://0749-14-42-86-124.ngrok-free.app/?action=stream"; // yoki boshqa stream bo‘lsa, uni ham qo‘shing
+    const streamUrl1 = "http://192.168.0.142:8080/?action=stream";
+    const streamUrl2 = "http://192.168.0.142:5000/video"; // yoki boshqa stream bo‘lsa, uni ham qo‘shing
 
     useEffect(() => {
         const interval = setInterval(async () => {
@@ -42,8 +42,8 @@ const CameraFeed = () => {
     return (
         <div className="w-[1280px] h-[800px] flex flex-col m-auto justify-center">
             <div className="flex justify-between gap-4 px-2">
-                <MJPEGPlayer  streamUrl={streamUrl1} />
-                <MJPEGPlayer  streamUrl={streamUrl2} />
+                <MJPEGPlayer streamUrl={streamUrl1} />
+                <MJPEGPlayer streamUrl={streamUrl2} />
             </div>
 
             <div className="flex items-center justify-between p-1 mt-4">
@@ -62,7 +62,7 @@ const CameraFeed = () => {
             </div>
         </div>
     );
-};;
+};
 
 export default CameraFeed;
 
