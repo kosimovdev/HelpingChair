@@ -39,7 +39,7 @@ const WarningModal = ({obstacleType, onClose}) => {
             <div
                 style={{
                     width: "600px",
-                    height: "440px",
+                    height: "600px",
                     backgroundColor: "white",
                     borderRadius: "12px",
                     padding: "20px",
@@ -51,7 +51,9 @@ const WarningModal = ({obstacleType, onClose}) => {
                 <div style={{margin: "0 auto"}}>
                     <img src={warningPng} alt="warning" style={{width: "250px", height: "200px", margin: "0 auto"}} />
                 </div>
-
+              <h2 className="mt-[20px] text-[30px]">낙상이 감지되었습니다.</h2>
+              <p className="text-[20px]"><span className="bg-[#FFF600] text-white p-1 rounded-[10px]">알람 종료</span> 버튼을 누르지 않으신다면 
+본인 보호자에게 자동으로 문자가 전송됩니다.</p>
                 <div
                     style={{
                         backgroundColor: "#FFF600",
@@ -77,7 +79,7 @@ const WarningModal = ({obstacleType, onClose}) => {
                         cursor: "pointer",
                     }}
                 >
-                    확인
+                    알람 종료
                 </button>
             </div>
         </div>

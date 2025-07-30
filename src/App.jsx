@@ -13,6 +13,7 @@ import {WarningProvider} from "./context/WarningContext.jsx";
 import GlobalWarningModal from "./GlobalModal/GlobalModal.jsx";
 import KakaoMap from "./KakaoMap/KakaoMap.jsx";
 import UsersList from "./UsersList/userList.jsx";
+import WarningModal from "./WarningModal/Warningmodal.jsx";
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
                         <Route path="/camera" element={<CameraCard />} />
                         <Route path="/users" element={<UsersList />} />
                         <Route path="/login" element={<LoginPage />} />
+                          <Route path="/warning" element={<WarningModal />} />
                         <Route path="*" element={<NotFound />} /> {/* 404 page*/}
                     </Routes>
                     <GlobalWarningModal />
