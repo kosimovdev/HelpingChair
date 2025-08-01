@@ -1,7 +1,5 @@
 import {useEffect, useRef, useState} from "react";
 import "./index.scss";
-import previousImg from "../assets/previousImg.png";
-import nextLogo from "../assets/nextLogo.png";
 import {useNavigate} from "react-router-dom";
 import storage from "../services/storage/index.js";
 import user from "../services/Auth/Auth.jsx";
@@ -20,6 +18,11 @@ function HeartPercentage() {
     const walkerId = "walker001";
     const {showWarning} = useWarning();
     const lastObstacleId = useRef(null);
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+    const [warningData, setWarningData] = useState({
+    obstacle_id: null,
+    obstacle_type: "",
+});
 
     const audioRef = useRef(null);
 
@@ -41,11 +44,50 @@ function HeartPercentage() {
 
         return () => clearInterval(interval);
     }, [user_id]);
+
+   const getFallAlert = async (user_id, walkerId) => {
+    try {
+        const fallAlert = await user.getWarning(user_id, walkerId);
+
+        // Bu yerda tekshiramiz: agar fall_detected true va alert_id mavjud bo‘lsa
+        if (fallAlert?.fall_detected && fallAlert.alert_id !== null) {
+            console.log("Fall alert detected:", fallAlert);
+            setWarningData({
+                obstacle_id: fallAlert.alert_id,
+                obstacle_type: "Fall Detected", // yoki backenddan keladigan aniq tur bo‘lsa, shuni yozing
+            });
+            setIsModalOpen(true);
+        } else {
+            console.log("No fall alert detected.");
+        }
+    } catch (error) {
+        console.error("Error fetching fall alert:", error);
+    }
+};
+
+
      
+    // const getFallAlert = async (user_id, walkerId) => {
+    //     try {
+    //         const fallAlert = await user.getWarning(user_id, walkerId);
+    //         if (fallAlert) {
+    //             console.log("Fall alert detected:", fallAlert);
+    //             console.log("fall-alert id", fallAlert.alert_id);
+    //             // Agar fall alert bo'lsa, modalni ochamiz
+    //             setIsModalOpen(true);
+    //         } else {
+    //             console.log("No fall alert detected.");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error fetching fall alert:", error);
+    //     }
+    // };
+
     const getUserHeartrate = async (user_id) => {
         try {
             setLoading(true);
             const bpmData = await user.getHeartrate(user_id);
+            
             console.log("BPM data:", bpmData);
 
             if (Array.isArray(bpmData)) {
@@ -66,29 +108,11 @@ function HeartPercentage() {
             setLoading(false);
         }
     };
-      
-
-    // const getUserHeartrate = async (user_id) => {
-    //     try {
-    //         setLoading(true);
-    //         const bpmData = await user.getHeartrate(user_id);
-    //         console.log("BPM data:", bpmData);
-    //         if (Array.isArray(bpmData) && bpmData.length > 0) {
-    //             setBpm(bpmData);
-    //             console.log(bpmData);
-    //             console.log("Eng oxirgi BPM ma'lumot:", bpmData[0]);
-    //         } else {
-    //             console.error("BPM ma'lumotlari topilmadi yoki noto‘g‘ri formatda.");
-    //         }
-    //     } catch (error) {
-    //         console.error("Heart rate olishda xatolik:", error);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+    
 
     useEffect(() => {
         getUserHeartrate(user_id);
+        getFallAlert(user_id, walkerId); // Fall alertni tekshirish
     }, [user_id]);
 
     const handlePreviousClick = () => navigate("/camera");
@@ -96,6 +120,7 @@ function HeartPercentage() {
 
     return (
         <div className={"heart m-auto"}>
+
             <div className="flex flex-col items-center justify-center HeartMainDiv">
                 <div className="w-full bg-white px-6 rounded-2xl shadow-lg text-center">
                     <h1 className="text-[80px] font-bold">심박수</h1>

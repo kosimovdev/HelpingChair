@@ -20,6 +20,16 @@ const user = {
             console.error("API xatosi:", err);
             throw err;
         }),
+        getWarning: (user_id, walkerId) =>
+       api
+       .get(`/api/fall-alert/dashboard?user_id=${user_id}&walker_id=${walkerId}`)
+       .then((res) => res.data) // bu yerda data = true yoki false
+       .catch((err) => {
+          console.error("API xatosi:", err);
+          return false; // xatolik bo‘lsa false qaytaradi
+    })
+
+
 };
 
 export default user;

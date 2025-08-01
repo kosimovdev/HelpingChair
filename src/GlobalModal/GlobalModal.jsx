@@ -1,4 +1,3 @@
-import React from "react";
 import WarningModal from "../WarningModal/Warningmodal";
 import { useWarning } from "../context/WarningContext";
 
