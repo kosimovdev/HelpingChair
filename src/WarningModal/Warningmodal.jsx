@@ -79,7 +79,7 @@ const WarningModal = ({obstacleType, onClose}) => {
                         cursor: "pointer",
                     }}
                 >
-                    알람 종료
+                    알람 종료 salom
                 </button>
             </div>
         </div>
