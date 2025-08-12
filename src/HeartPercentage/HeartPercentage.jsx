@@ -8,27 +8,26 @@ import dayjs from "dayjs";
 import {useWarning} from "../context/WarningContext.jsx";
 import {getLatestObstacle} from "../services/Warning/Warning.jsx";
 import alarmAudio from "../assets/alarm.mp3";
+import FallModal from "../FallModal/FallModal.jsx";
 
 function HeartPercentage() {
     const [bpm, setBpm] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen2, setIsModalOpen2] = useState(false);
     const navigate = useNavigate();
     const user_id = storage.get("user_id");
     const walkerId = "walker001";
     const {showWarning} = useWarning();
     const lastObstacleId = useRef(null);
-    // const [isModalOpen, setIsModalOpen] = useState(false);
-    const [warningData, setWarningData] = useState({
-    obstacle_id: null,
-    obstacle_type: "",
-});
+    const [dismissedAlertId, setDismissedAlertId] = useState(null);
+    const [warningData, setWarningData] = useState(null);
 
     const audioRef = useRef(null);
 
     useEffect(() => {
         if (!user_id) return navigate("/login");
-
+         getUserHeartrate(user_id);
         const interval = setInterval(async () => {
             try {
                 const data = await getLatestObstacle(user_id, walkerId);
@@ -45,20 +44,48 @@ function HeartPercentage() {
         return () => clearInterval(interval);
     }, [user_id]);
 
-   const getFallAlert = async (user_id, walkerId) => {
+//    const getFallAlert = async (user_id, walkerId) => {
+//     try {
+//         const fallAlert = await user.getWarning(user_id, walkerId);
+//         if (
+//             fallAlert &&
+//             fallAlert.fall_detected === true &&
+//             fallAlert.alert_id !== null &&
+//             fallAlert.alert_id !== dismissedAlertId
+//         ) {
+//             console.log("Fall alert detected:", fallAlert);
+//             console.log("Alert ID from server:", fallAlert.alert_id);
+//             console.log("Dismissed alert ID:", dismissedAlertId);
+
+//             setWarningData({
+//                 obstacle_id: fallAlert.alert_id,
+//                 obstacle_type: "Fall Detected"
+//             });
+//             setIsModalOpen2(true);
+//         } else {
+//             console.log("No fall alert detected or already dismissed.");
+//         }
+//     } catch (error) {
+//         console.error("Error fetching fall alert:", error);
+//     }
+// };
+
+
+    const getFallAlert = async () => {
     try {
         const fallAlert = await user.getWarning(user_id, walkerId);
 
-        // Bu yerda tekshiramiz: agar fall_detected true va alert_id mavjud bo‘lsa
-        if (fallAlert?.fall_detected && fallAlert.alert_id !== null) {
-            console.log("Fall alert detected:", fallAlert);
-            setWarningData({
-                obstacle_id: fallAlert.alert_id,
-                obstacle_type: "Fall Detected", // yoki backenddan keladigan aniq tur bo‘lsa, shuni yozing
-            });
-            setIsModalOpen(true);
+        console.log("Alert ID from server:", fallAlert?.alert_id);
+        // console.log(fallAlert)
+        if (
+            fallAlert?.fall_detected &&
+            fallAlert?.alert_id !== null &&
+            Number(fallAlert.alert_id) !== Number(localStorage.getItem("dismissedAlertId"))
+        ) {
+            setWarningData(fallAlert);
+            setIsModalOpen2(true);
         } else {
-            console.log("No fall alert detected.");
+            console.log("No new fall alert or already dismissed.");
         }
     } catch (error) {
         console.error("Error fetching fall alert:", error);
@@ -66,22 +93,32 @@ function HeartPercentage() {
 };
 
 
-     
-    // const getFallAlert = async (user_id, walkerId) => {
-    //     try {
-    //         const fallAlert = await user.getWarning(user_id, walkerId);
-    //         if (fallAlert) {
-    //             console.log("Fall alert detected:", fallAlert);
-    //             console.log("fall-alert id", fallAlert.alert_id);
-    //             // Agar fall alert bo'lsa, modalni ochamiz
-    //             setIsModalOpen(true);
-    //         } else {
-    //             console.log("No fall alert detected.");
-    //         }
-    //     } catch (error) {
-    //         console.error("Error fetching fall alert:", error);
-    //     }
-    // };
+  useEffect(() => {
+    const saved = localStorage.getItem("dismissedAlertId");
+    if (saved) {
+        setDismissedAlertId(Number(saved));
+    }
+
+    const interval = setInterval(() => {
+        getFallAlert();
+    }, 10000); // 10 sekundda bir
+
+    return () => clearInterval(interval);
+}, [user_id, walkerId]); // Faqat user_id va walkerId ga bog‘liq
+
+
+
+   const handleCloseModal = () => {
+    setIsModalOpen2(false);
+    if (warningData?.alert_id !== null) {
+        const alertId = Number(warningData.alert_id);
+        localStorage.setItem("dismissedAlertId", alertId);
+        console.log("Dismissed alert ID saved:", alertId);
+        console.log(warningData.timestamp)
+        setDismissedAlertId(alertId); // baribir ishlaydi, lekin bu second layer
+    }
+};
+
 
     const getUserHeartrate = async (user_id) => {
         try {
@@ -110,10 +147,7 @@ function HeartPercentage() {
     };
     
 
-    useEffect(() => {
-        getUserHeartrate(user_id);
-        getFallAlert(user_id, walkerId); // Fall alertni tekshirish
-    }, [user_id]);
+ 
 
     const handlePreviousClick = () => navigate("/camera");
     const handleNextClick = () => navigate("/activity");
@@ -186,7 +220,7 @@ function HeartPercentage() {
             {/* 📦 Modal */}
             {isModalOpen && (
                 <div className="fixed  inset-0 bg-green-50 opacity-100 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-2xl shadow-xl w-[90%] max-w-4xl relative top-[-25%]">
+                    <div className="bg-white p-6 rounded-2xl shadow-xl w-[90%] max-w-4xl relative top-[-4%]">
                         <button
                             onClick={() => setIsModalOpen(false)}
                             className="absolute top-3 right-3 text-xl font-bold text-gray-500 hover:text-black"
@@ -222,154 +256,17 @@ function HeartPercentage() {
                     </div>
                 </div>
             )}
+            {isModalOpen2 && (
+       <FallModal
+        obstacleType={warningData.timestamp}
+        obstacleId={warningData.alert_id}
+        onClose={handleCloseModal}
+        user_id={user_id}
+        walker_id={walkerId}
+    />
+)}
         </div>
     );
 }
 
 export default HeartPercentage;
-
-// import {useEffect, useRef, useState} from "react";
-// import "./index.scss";
-// import previous from "../assets/previousImg.png";
-// import nextLogo from "../assets/nextLogo.png";
-// import {useNavigate} from "react-router-dom";
-// import storage from "../services/storage/index.js";
-// import user from "../services/Auth/Auth.jsx";
-// import {CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-// import dayjs from "dayjs";
-// import {useWarning} from "../context/WarningContext.jsx";
-// import {getLatestObstacle} from "../services/Warning/Warning.jsx";
-
-// function HeartPercentage() {
-//     const [bpm, setBpm] = useState([]);
-//     const [loading, setLoading] = useState(false);
-//     const navigate = useNavigate();
-//     const user_id = storage.get("user_id");
-//     const walkerId = "walker001";
-//     const {showWarning} = useWarning();
-//     const lastObstacleId = useRef(null);
-
-//     useEffect(() => {
-//         if (!user_id) {
-//             return navigate("/login");
-//         }
-//         const interval = setInterval(async () => {
-//             try {
-//                 if (!user_id) return;
-
-//                 const data = await getLatestObstacle(user_id, walkerId);
-
-//                 if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
-//                     lastObstacleId.current = data.obstacle_id;
-//                     const obstacleClean = data.obstacle_type.replace(/[\[\]']/g, "");
-//                     showWarning(obstacleClean, data.obstacle_id); // 🟢 Kontekst orqali chiqaramiz
-//                 }
-//             } catch (err) {
-//                 console.error("Obstacle error:", err);
-//             }
-//         }, 3000);
-
-//         return () => clearInterval(interval);
-//     }, [user_id]);
-
-//     const getUserHeartrate = async (user_id) => {
-//         try {
-//             setLoading(true);
-//             const bpmData = await user.getHeartrate(user_id);
-//             // const bpmData = response.data;
-//             console.log("bpm data", bpmData);
-
-//             console.log("BPM API response:", bpmData);
-
-//             if (Array.isArray(bpmData) && bpmData.length > 0) {
-//                 // const sorted = bpmData.sort((a, b) => new Date(b.recorded_at) - new Date(a.recorded_at));
-//                 setBpm(bpmData);
-//             } else {
-//                 console.error("BPM ma'lumotlari topilmadi yoki noto‘g‘ri formatda.");
-//             }
-//         } catch (error) {
-//             console.error("Heart rate olishda xatolik:", error);
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
-
-//     useEffect(() => {
-//         getUserHeartrate(user_id);
-//     }, [user_id]);
-
-//     const handlePreviousClick = () => {
-//         navigate("/camera");
-//     };
-
-//     const handleNextClick = () => {
-//         navigate("/activity");
-//     };
-
-//     return (
-//         <div className={""}>
-//             <div className="flex flex-col m-auto items-center justify-center HeartMainDiv">
-//                 <div className="w-full max-w-4xl bg-white px-6 rounded-2xl shadow-lg text-center">
-//                     <h1 className="text-[60px] font-bold">심박수</h1>
-//                     <div className="relative flex items-center justify-between mt-6 mb-4">
-//                         <button
-//                             onClick={handlePreviousClick}
-//                             className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-[#E2E2E2]"
-//                         >
-//                             <img className={"w-[40px]"} src={previous} alt="<" />
-//                         </button>
-
-//                         <div className="mx-4 w-[300px] h-[300px] bg-[#E2FBD7] rounded-full flex items-center justify-center border-[15px] border-green-600">
-//                             <span className="text-[60px] font-bold text-green-700">
-//                                 {loading ? "Loading..." : bpm?.[bpm.length - 1]?.heartrate ?? "N/A"}
-//                             </span>
-//                             {/* <span className="text-[60px] font-bold text-green-700">
-//                                 {loading ? "Loading..." : bpm ?? "N/A"}
-//                             </span> */}
-//                         </div>
-
-//                         <button
-//                             onClick={handleNextClick}
-//                             className="flex items-center justify-center rounded-full w-[80px] h-[80px] bg-[#E2E2E2]"
-//                         >
-//                             <img className={"w-[40px]"} src={nextLogo} alt=">" />
-//                         </button>
-//                     </div>
-
-//                     <p className="mt-[20px] text-black text-[35px]">
-//                         <span className="w-[20px] h-[20px] bg-green-600 rounded-full inline-block mr-2"></span> BPM
-//                     </p>
-
-//                     {/* Chart Area */}
-//                     <div className="mt-8 h-[300px] w-full">
-//                         {loading ? (
-//                             <p>Loading chart...</p>
-//                         ) : (
-//                             <ResponsiveContainer width="100%" height="100%">
-//                                 <LineChart data={bpm}>
-//                                     <CartesianGrid strokeDasharray="3 3" />
-//                                     <XAxis
-//                                         dataKey="recorded_at"
-//                                         tickFormatter={(time) => dayjs(time).format("HH:mm:ss")}
-//                                     />
-//                                     <YAxis />
-//                                     <Tooltip labelFormatter={(time) => dayjs(time).format("YYYY-MM-DD HH:mm:ss")} />
-//                                     <Line
-//                                         type="monotone"
-//                                         dataKey="heartrate"
-//                                         stroke="#22c55e"
-//                                         strokeWidth={3}
-//                                         dot={{r: 4}}
-//                                         activeDot={{r: 6}}
-//                                     />
-//                                 </LineChart>
-//                             </ResponsiveContainer>
-//                         )}
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default HeartPercentage;
