@@ -2,9 +2,7 @@ import React, {useEffect, useRef} from "react";
 import {getLatestObstacle} from "../services/Warning/Warning.jsx";
 import {useWarning} from "../context/WarningContext";
 import {useNavigate} from "react-router-dom";
-// import previous from "../assets/previousImg.png";
-// import nextLogo from "../assets/nextLogo.png";
-import MJPEGPlayer from "../MJPEGPlayer/MJPEGPlayer.jsx"; // ← to‘g‘ri path ekanligiga ishonch hosil qiling
+import MJPEGPlayer from "../MJPEGPlayer/MJPEGPlayer.jsx"; 
 
 const CameraFeed = () => {
     const lastObstacleId = useRef(null);
@@ -13,8 +11,8 @@ const CameraFeed = () => {
     const {showWarning} = useWarning();
     const navigate = useNavigate();
 
-    const streamUrl1 = "https://8c084799dc8a.ngrok-free.app/?action=stream";
-    const streamUrl2 = "https://3d0d6e79634a.ngrok-free.app/?action=stream"; // yoki boshqa stream bo‘lsa, uni ham qo‘shing
+    const streamUrl1 = "https://3edd381d5bb3.ngrok-free.app/?action=stream";
+    const streamUrl2 = "https://7950f35253fb.ngrok-free.app/?action=stream"; 
 
     useEffect(() => {
         const interval = setInterval(async () => {

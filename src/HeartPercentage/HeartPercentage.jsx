@@ -210,9 +210,9 @@ function HeartPercentage() {
                     <div className="relative top-[-320px] left-0">
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="absolute top-[-300px] left-[10px] w-[220px] h-[60px] px-3 py-3 bg-green-600 text-white text-[20px] rounded-xl hover:bg-green-700 transition"
+                            className="absolute top-[-350px] left-[10px]  transition"
                         >
-                            📈 심박수 그래프 보기
+                           <img className="w-[130px] h-[130px]" src="/images/heart.png" alt="heart" />
                         </button>
                     </div>
                 </div>
@@ -230,7 +230,7 @@ function HeartPercentage() {
                         </button>
                         <h2 className="text-2xl font-bold text-center mb-4">심박수 그래프</h2>
                         {loading ? (
-                            <p className="text-center">Yuklanmoqda...</p>
+                            <DotLoader className="m-auto mt-[30px]" color="#02920c" size={100} />
                         ) : (
                             <div className="h-[300px]">
                                 <ResponsiveContainer width="100%" height="100%">
