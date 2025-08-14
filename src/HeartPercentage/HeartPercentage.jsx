@@ -9,6 +9,7 @@ import {useWarning} from "../context/WarningContext.jsx";
 import {getLatestObstacle} from "../services/Warning/Warning.jsx";
 import alarmAudio from "../assets/alarm.mp3";
 import FallModal from "../FallModal/FallModal.jsx";
+import {BarLoader } from "react-spinners";
 
 function HeartPercentage() {
     const [bpm, setBpm] = useState([]);
@@ -164,13 +165,13 @@ function HeartPercentage() {
                             onClick={handlePreviousClick}
                             className="flex items-center justify-center rounded-full w-[100px] h-[100px] bg-[#E2E2E2]"
                         >
-                            {/* <img className={"w-[40px]"} src={previousImg} alt="myImage" /> */}
+                          
                             <img className="w-[60px]" src="/images/previousImg.png" alt="previous" />
                         </button>
 
                         <div className="mx-4 w-[400px] h-[400px] bg-[#E2FBD7] rounded-full flex items-center justify-center border-[20px] border-green-600">
                             <span className="text-[80px] font-bold text-green-700">
-                                {loading ? "Loading..." : bpm?.[0]?.heartrate ?? "N/A"}
+                                {loading ? <BarLoader color="#049c1b" height={20}/> : bpm?.[0]?.heartrate ?? "N/A"}
                             </span>
                         </div>
 
