@@ -53,7 +53,10 @@ const FallModal = ({ obstacleType, obstacleId, onClose, user_id, walker_id }) =>
         },
       }
     );
-    onClose(); // Modalni yopamiz
+    onClose(
+
+        
+    ); // Modalni yopamiz
     console.log("Alert sent!");
   } catch (error) {
     console.error("Error sending fall alert:", error.response?.data || error);

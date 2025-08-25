@@ -140,7 +140,7 @@ function ActivityPage({walker_id = "walker001"}) {
     }, [user_id]);
 
     const handlePreviousClick = () => {
-        navigate("/");
+        navigate("/heart");
     };
     const handleNextClick = () => {
         navigate("/map");

@@ -45,32 +45,6 @@ function HeartPercentage() {
         return () => clearInterval(interval);
     }, [user_id]);
 
-//    const getFallAlert = async (user_id, walkerId) => {
-//     try {
-//         const fallAlert = await user.getWarning(user_id, walkerId);
-//         if (
-//             fallAlert &&
-//             fallAlert.fall_detected === true &&
-//             fallAlert.alert_id !== null &&
-//             fallAlert.alert_id !== dismissedAlertId
-//         ) {
-//             console.log("Fall alert detected:", fallAlert);
-//             console.log("Alert ID from server:", fallAlert.alert_id);
-//             console.log("Dismissed alert ID:", dismissedAlertId);
-
-//             setWarningData({
-//                 obstacle_id: fallAlert.alert_id,
-//                 obstacle_type: "Fall Detected"
-//             });
-//             setIsModalOpen2(true);
-//         } else {
-//             console.log("No fall alert detected or already dismissed.");
-//         }
-//     } catch (error) {
-//         console.error("Error fetching fall alert:", error);
-//     }
-// };
-
 
     const getFallAlert = async () => {
     try {
@@ -108,7 +82,6 @@ function HeartPercentage() {
 }, [user_id, walkerId]); // Faqat user_id va walkerId ga bog‘liq
 
 
-
    const handleCloseModal = () => {
     setIsModalOpen2(false);
     if (warningData?.alert_id !== null) {
@@ -119,7 +92,6 @@ function HeartPercentage() {
         setDismissedAlertId(alertId); // baribir ishlaydi, lekin bu second layer
     }
 };
-
 
     const getUserHeartrate = async (user_id) => {
         try {
@@ -147,10 +119,7 @@ function HeartPercentage() {
         }
     };
     
-
- 
-
-    const handlePreviousClick = () => navigate("/camera");
+    const handlePreviousClick = () => navigate("/");
     const handleNextClick = () => navigate("/activity");
 
     return (
@@ -177,7 +146,7 @@ function HeartPercentage() {
 
                         <button
                             onClick={handleNextClick}
-                            className="flex items-center justify-center rounded-full w-[100px] h-[100px] bg-[#E2E2E2]"
+                            className="flex items-center justify-center rounded-full w-[100px] h-[100px] bg-[#E2E2E2] hover:bg-[#D1D1D1] transition"
                         >
                             {/* <img className={"w-[40px]"} src={nextLogo} alt="myImage" /> */}
                             <img className="w-[60px]" src="/images/nextLogo.png" alt="next" />
@@ -190,7 +159,7 @@ function HeartPercentage() {
                     <audio ref={audioRef} src={alarmAudio} preload="auto" />
 
                     {/* 🎵 Audio o‘ynatish tugmasi */}
-                    <div className="mt-6 flex justify-center">
+                    {/* <div className="mt-6 flex justify-center">
                         <button
                             onClick={() => {
                                 if (audioRef.current) {
@@ -204,7 +173,7 @@ function HeartPercentage() {
                         >
                             ▶️ Ovoz eshittirish
                         </button>
-                    </div>
+                    </div> */}
 
                     {/* 🔘 Chartni ko‘rsatish tugmasi */}
                     <div className="relative top-[-320px] left-0">
@@ -212,7 +181,7 @@ function HeartPercentage() {
                             onClick={() => setIsModalOpen(true)}
                             className="absolute top-[-350px] left-[10px]  transition"
                         >
-                           <img className="w-[130px] h-[130px]" src="/images/heart.png" alt="heart" />
+                           <img className="w-[120px] h-[120px]" src="/images/heart.png" alt="heart" />
                         </button>
                     </div>
                 </div>

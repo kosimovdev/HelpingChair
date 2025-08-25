@@ -19,6 +19,7 @@
     "axios": "^1.8.4",
     "dayjs": "^1.11.13",
     "hls.js": "^1.6.2",
+    "lucide-react": "^0.541.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",

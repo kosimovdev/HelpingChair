@@ -12,18 +12,18 @@ import GlobalWarningModal from "./GlobalModal/GlobalModal.jsx";
 import KakaoMap from "./KakaoMap/KakaoMap.jsx";
 import UsersList from "./UsersList/userList.jsx";
 import WarningModal from "./WarningModal/Warningmodal.jsx";
+import FullPage from "./FullPage/FullPage.jsx";
 
 function App() {
    
     return (
         <>
                 <WarningProvider>
-                    {/* <FallWarningWatcher /> */}
                     <Routes>
-                        <Route path="/" element={<HeartPercentage />} />
+                        <Route path="/" element={<FullPage />} />
+                        <Route path="/heart" element={<HeartPercentage />} />
                         <Route path="/activity" element={<ActivityPage />} />
                         <Route path="/map" element={<KakaoMap />} />
-                        {/* <Route path="/map" element={<KakaoMap latitude={latitude} longitude={longitude} />} /> */}
                         <Route path="/camera" element={<CameraCard />} />
                         <Route path="/users" element={<UsersList />} />
                         <Route path="/login" element={<LoginPage />} />
