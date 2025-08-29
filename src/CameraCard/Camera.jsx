@@ -11,8 +11,8 @@ const CameraFeed = () => {
     const {showWarning} = useWarning();
     const navigate = useNavigate();
 
-    const streamUrl1 = "https://62cfd22cc9fa.ngrok-free.app/?action=stream";
-    const streamUrl2 = "https://df0654badccc.ngrok-free.app/?action=stream"; 
+    const streamUrl1 = "https://1a8d6b8f0499.ngrok-free.app/?action=stream";
+    const streamUrl2 = "https://f9a25fb439e6.ngrok-free.app/?action=stream"; 
 
     useEffect(() => {
         const interval = setInterval(async () => {
