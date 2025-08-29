@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import "./index.scss";
-import activityService from "../services/ActivityTime/Activitytime.jsx";
+// import activityService from "../services/ActivityTime/Activitytime.jsx";
 // import accelerometerService from "../services/ActivityTime/ActivityTime2.jsx"; // 🆕
 import accelerometerService from "../services/ActivityTime2/ActivityTime2.jsx";
 import {toast} from "react-toastify";
@@ -26,6 +27,7 @@ function ActivityPage({walker_id = "walker001"}) {
         if (!isCounting) {
             // API chaqiruvni vaqtincha olib tashladik
             console.log("⏱️ Vaqt boshlandi (test rejimi - API yo‘q)");
+            toast.success("활동시간이 시작되었습니다!");
             setIsCounting(true);
             setBpm(0);
             intervalRef.current = setInterval(() => {
@@ -39,70 +41,30 @@ function ActivityPage({walker_id = "walker001"}) {
             clearInterval(intervalRef.current);
             intervalRef.current = null;
             setIsCounting(false);
+            toast.success("활동시간이 저장되었습니다!");
             console.log("⛔️ Vaqt to‘xtatildi (test rejimi - API yo‘q)");
             setElapsedTime(0);
         }
     };
 
-    // // 👉 Harakatni boshlash (manual emas, avtomatik chaqiriladi)
-    // const startCounting = async () => {
-    //     if (!isCounting) {
-    //         try {
-    //             await activityService.startActivity({
-    //                 user_id,
-    //                 walker_id,
-    //             });
-    //             setIsCounting(true);
-    //             setBpm(0);
-    //             intervalRef.current = setInterval(() => {
-    //                 setElapsedTime((prev) => prev + 1);
-    //             }, 1000);
-    //         } catch (error) {
-    //             console.error("Start API error:", error);
-    //         }
-    //     }
-    // };
-
-    // // 👉 Harakatni to‘xtatish (hozircha faqat tugma orqali yoki qo‘lda ishlatiladi)
-    // const stopCounting = async () => {
-    //     if (intervalRef.current) {
-    //         clearInterval(intervalRef.current);
-    //         intervalRef.current = null;
-    //         setIsCounting(false);
-    //         const minutes = Math.floor(elapsedTime / 60);
-    //         const seconds = elapsedTime % 60;
-    //         try {
-    //             await activityService.stopActivity({
-    //                 user_id,
-    //                 walker_id,
-    //                 minutes,
-    //                 seconds,
-    //             });
-    //             setElapsedTime(0);
-    //             toast.success("활동시간이 저장되었습니다!");
-    //         } catch (error) {
-    //             console.error("Stop API error:", error);
-    //             toast.error("저장 실패. 다시 시도해주세요.");
-    //         }
-    //     }
-    // };
-
     // ✅ 1. Avtomatik harakatni aniqlovchi useEffect
     useEffect(() => {
-        const THRESHOLD = 1.2; // bu qiymatni siz test qilib o‘zingiz aniqlang
+        const THRESHOLD = 1; // bu qiymatni siz test qilib o‘zingiz aniqlang
         const movementInterval = setInterval(async () => {
             const result = await accelerometerService.getLatestAccelerometer(user_id, walker_id);
             // console.log("📡 GET javobi:", result);
 
-            if (!result || typeof result.accel_value !== "number") return;
+            if (!result || typeof result.is_moving !== "number") return;
 
-            const {accel_value} = result;
-            console.log("📈 accel_value:", accel_value);
+            const {is_moving} = result;
+            console.log("📈 accel_value:", is_moving);
 
-            if (accel_value > THRESHOLD && !isCounting) {
+            if (is_moving > THRESHOLD && !isCounting) {
                 console.log("🚶 Harakat boshlandi (accel_value > threshold)");
+                toast.success("활동시간이 시작되었습니다!");
                 startCounting();
-            } else if (accel_value <= THRESHOLD && isCounting) {
+            } else if (is_moving <= THRESHOLD && isCounting) {
+                toast.success("활동시간이 저장되었습니다!");
                 console.log("🛑 Harakat tugadi (accel_value <= threshold)");
                 stopCounting();
             }
@@ -138,6 +100,10 @@ function ActivityPage({walker_id = "walker001"}) {
             clearInterval(intervalRef);
         };
     }, [user_id]);
+
+    
+
+
 
     const handlePreviousClick = () => {
         navigate("/heart");
@@ -182,6 +148,60 @@ function ActivityPage({walker_id = "walker001"}) {
 }
 
 export default ActivityPage;
+
+
+
+
+
+
+
+
+
+
+
+
+// // 👉 Harakatni boshlash (manual emas, avtomatik chaqiriladi)
+    // const startCounting = async () => {
+    //     if (!isCounting) {
+    //         try {
+    //             await activityService.startActivity({
+    //                 user_id,
+    //                 walker_id,
+    //             });
+    //             setIsCounting(true);
+    //             setBpm(0);
+    //             intervalRef.current = setInterval(() => {
+    //                 setElapsedTime((prev) => prev + 1);
+    //             }, 1000);
+    //         } catch (error) {
+    //             console.error("Start API error:", error);
+    //         }
+    //     }
+    // };
+
+    // // 👉 Harakatni to‘xtatish (hozircha faqat tugma orqali yoki qo‘lda ishlatiladi)
+    // const stopCounting = async () => {
+    //     if (intervalRef.current) {
+    //         clearInterval(intervalRef.current);
+    //         intervalRef.current = null;
+    //         setIsCounting(false);
+    //         const minutes = Math.floor(elapsedTime / 60);
+    //         const seconds = elapsedTime % 60;
+    //         try {
+    //             await activityService.stopActivity({
+    //                 user_id,
+    //                 walker_id,
+    //                 minutes,
+    //                 seconds,
+    //             });
+    //             setElapsedTime(0);
+    //             toast.success("활동시간이 저장되었습니다!");
+    //         } catch (error) {
+    //             console.error("Stop API error:", error);
+    //             toast.error("저장 실패. 다시 시도해주세요.");
+    //         }
+    //     }
+    // };
 
 // import {useEffect, useRef, useState} from "react";
 // import {useNavigate} from "react-router-dom";
