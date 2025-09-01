@@ -10,7 +10,7 @@ import {useWarning} from "../context/WarningContext.jsx";
 import {getLatestObstacle} from "../services/Warning/Warning.jsx";
 import alarmAudio from "../assets/alarm.mp3";
 import FallModal from "../FallModal/FallModal.jsx";
-import { DotLoader } from "react-spinners";
+import {BarLoader , DotLoader } from "react-spinners";
 
 function HeartPercentage() {
     const [bpm, setBpm] = useState([]);
@@ -52,7 +52,7 @@ function HeartPercentage() {
         const fallAlert = await user.getWarning(user_id, walkerId);
 
         console.log("Alert ID from server:", fallAlert?.alert_id);
-        // console.log(fallAlert)
+        console.log(fallAlert)
         if (
             fallAlert?.fall_detected &&
             fallAlert?.alert_id !== null &&
@@ -80,13 +80,13 @@ function HeartPercentage() {
     }, 10000); 
 
     return () => clearInterval(interval);
-}, [user_id, walkerId]);
+}, [user_id, walkerId]); // Faqat user_id va walkerId ga bog‘liq
 
 
    const handleCloseModal = () => {
     setIsModalOpen2(false);
-    if (dismissedAlertId?.alert_id !== null) {
-        const alertId = Number(dismissedAlertId.alert_id);
+    if (warningData?.alert_id !== null) {
+        const alertId = Number(warningData.alert_id);
         localStorage.setItem("dismissedAlertId", alertId);
         console.log("Dismissed alert ID saved:", alertId);
         console.log(warningData.timestamp)
@@ -229,8 +229,8 @@ function HeartPercentage() {
             )}
             {isModalOpen2 && (
        <FallModal
-        obstacleType={dismissedAlertId.timestamp}
-        obstacleId={dismissedAlertId.alert_id}
+        obstacleType={warningData.timestamp}
+        obstacleId={warningData.alert_id}
         onClose={handleCloseModal}
         user_id={user_id}
         walker_id={walkerId}

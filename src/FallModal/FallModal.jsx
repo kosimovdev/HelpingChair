@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import alarmSound from "../assets/alarm.mp3"; // Fayl yo‘li loyihangizga mos bo‘lsin
 import axios from "axios";
+import {toast} from "react-toastify";
 
 const FallModal = ({ obstacleType, obstacleId, onClose, user_id, walker_id }) => {
     const [countdown, setCountdown] = useState(10);
@@ -53,10 +54,8 @@ const FallModal = ({ obstacleType, obstacleId, onClose, user_id, walker_id }) =>
         },
       }
     );
-    onClose(
-
-        
-    ); // Modalni yopamiz
+    onClose(); // Modalni yopamiz
+     toast.success("보호자에게 낙상 알림이 전송되었습니다!");
     console.log("Alert sent!");
   } catch (error) {
     console.error("Error sending fall alert:", error.response?.data || error);
