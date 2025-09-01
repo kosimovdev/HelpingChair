@@ -99,7 +99,7 @@ function HeartPercentage() {
             setLoading(true);
             const bpmData = await user.getHeartrate(user_id);
             
-            console.log("BPM data:", bpmData);
+            // console.log("BPM data:", bpmData);
 
             if (Array.isArray(bpmData)) {
                 if (bpmData.length > 0) {

@@ -1,9 +1,10 @@
-import React, {useEffect, useRef} from "react";
+import {useEffect, useRef} from "react";
 import warningPng from "../assets/warning.png";
 import alarmSound from "../assets/alarm.mp3";
 
 const WarningModal = ({obstacleType, onClose}) => {
     const audioRef = useRef(null);
+    console.log("kamji" , obstacleType)
 
     useEffect(() => {
         if (audioRef.current) {
@@ -52,8 +53,7 @@ const WarningModal = ({obstacleType, onClose}) => {
                 <div style={{margin: "0 auto"}}>
                     <img src={warningPng} alt="warning" style={{width: "250px", height: "200px", margin: "0 auto"}} />
                 </div>
-              {/* <p className="text-[20px]"><span className="bg-[#FFF600] text-white p-1 rounded-[10px]">알람 종료</span> 버튼을 누르지 않으신다면 
-본인 보호자에게 자동으로 문자가 전송됩니다.</p> */}
+             
                 <div
                     style={{
                         backgroundColor: "#FFF600",

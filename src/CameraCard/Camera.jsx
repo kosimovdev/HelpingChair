@@ -11,8 +11,8 @@ const CameraFeed = () => {
     const {showWarning} = useWarning();
     const navigate = useNavigate();
 
-    const streamUrl1 = "https://influenced-beta-directly-statute.trycloudflare.com/?action=stream";
-    const streamUrl2 = "https://fishing-delicious-laptop-wilson.trycloudflare.com/?action=stream"; 
+    const streamUrl1 = " https://scholar-crack-bike-warehouse.trycloudflare.com/?action=stream";
+    const streamUrl2 = " https://setup-anne-watch-exotic.trycloudflare.com/?action=stream"; 
 
     useEffect(() => {
         const interval = setInterval(async () => {

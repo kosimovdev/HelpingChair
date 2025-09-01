@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import alarmSound from "../assets/alarm.mp3"; // Fayl yo‘li loyihangizga mos bo‘lsin
+import alarmSound from "../assets/fallAlert.mp3"; // Fayl yo‘li loyihangizga mos bo‘lsin
 import axios from "axios";
 import {toast} from "react-toastify";
 
