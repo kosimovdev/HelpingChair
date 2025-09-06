@@ -6,7 +6,7 @@ const getLatestAccelerometer = async (user_id, walker_id) => {
         const response = await axios.get("/api/accelerometer/latest", {
             params: {user_id, walker_id},
         });
-        console.log("✅ GET accelerometer:", response.data);
+        console.log("Moving id --->", response.data.is_moving);
         return response.data;
     } catch (err) {
         console.error("❌ GET accelerometer xato:", err.response || err);

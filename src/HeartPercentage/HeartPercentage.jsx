@@ -54,7 +54,7 @@ function HeartPercentage() {
             } catch (err) {
                 console.error("Obstacle error:", err);
             }
-        }, 3000);
+        }, 1000);
 
         return () => clearInterval(interval);
     }, [user_id]);
