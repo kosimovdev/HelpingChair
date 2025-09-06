@@ -18,7 +18,7 @@ const LoginPage = () => {
             storage.set("user_id", userId);
             storage.set("contact", contact);
         }
-        return navigate("/");
+        return navigate("/home");
     };
 
   return (

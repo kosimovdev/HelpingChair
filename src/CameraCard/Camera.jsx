@@ -11,8 +11,8 @@ const CameraFeed = () => {
     const {showWarning} = useWarning();
     const navigate = useNavigate();
 
-    const streamUrl1 = " https://scholar-crack-bike-warehouse.trycloudflare.com/?action=stream";
-    const streamUrl2 = " https://setup-anne-watch-exotic.trycloudflare.com/?action=stream"; 
+    const streamUrl1 = " https://counting-mandate-heater-developments.trycloudflare.com/?action=stream";
+    const streamUrl2 = " https://qualification-spirituality-posing-change.trycloudflare.com/?action=stream"; 
 
    useEffect(() => {
         if (!user_id) return navigate("/login");

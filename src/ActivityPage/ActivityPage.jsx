@@ -2,7 +2,7 @@
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import "./index.scss";
-// import activityService from "../services/ActivityTime/Activitytime.jsx";
+import activityService from "../services/ActivityTime/Activitytime.jsx";
 // import accelerometerService from "../services/ActivityTime/ActivityTime2.jsx"; // 🆕
 import accelerometerService from "../services/ActivityTime2/ActivityTime2.jsx";
 import {toast} from "react-toastify";
@@ -47,59 +47,47 @@ function ActivityPage({walker_id = "walker001"}) {
         }
     };
 
-    // ✅ 1. Avtomatik harakatni aniqlovchi useEffect
-    useEffect(() => {
-        const THRESHOLD = 1; // bu qiymatni siz test qilib o‘zingiz aniqlang
-        const movementInterval = setInterval(async () => {
-            const result = await accelerometerService.getLatestAccelerometer(user_id, walker_id);
-            // console.log("📡 GET javobi:", result);
 
-            if (!result || typeof result.is_moving !== "number") return;
+// ⬇️ yuqoriga qo‘shib qo‘ying
+const lastTimestamp = useRef(null);
 
-            const {is_moving} = result;
-            console.log("📈 accel_value:", is_moving);
+// ✅ Avtomatik harakatni aniqlovchi useEffect
+useEffect(() => {
+    const THRESHOLD = 1;
+    const movementInterval = setInterval(async () => {
+        const result = await accelerometerService.getLatestAccelerometer(user_id, walker_id);
 
-            if (is_moving > THRESHOLD && !isCounting) {
-                console.log("🚶 Harakat boshlandi (accel_value > threshold)");
-                toast.success("활동시간이 시작되었습니다!");
-                startCounting();
-            } else if (is_moving <= THRESHOLD && isCounting) {
-                toast.success("활동시간이 저장되었습니다!");
-                console.log("🛑 Harakat tugadi (accel_value <= threshold)");
-                stopCounting();
-            }
-        }, 2000); // Har 2 sekundda tekshiradi
+        if (!result || typeof result.is_moving !== "number") return;
 
-        return () => clearInterval(movementInterval);
-    }, [user_id, isCounting]);
-    
-    
+        // 🔑 Yangi timestamp tekshirish
+        if (result.timestamp && result.timestamp === lastTimestamp.current) {
+            console.log("⏩ Bir xil timestamp, skip qilindi:", result.timestamp);
+            return;
+        }
+        lastTimestamp.current = result.timestamp; // yangilash
 
-    // // ✅ 2. Obstacle aniqlovchi useEffect (mavjud bo‘lib qoladi)
-    // useEffect(() => {
-    //     if (!user_id) {
-    //         return navigate("/login");
-    //     }
-    //     const intervalRef = setInterval(async () => {
-    //         try {
-    //             if (!user_id) return;
+        const {is_moving} = result;
+        console.log("📈 accel_value:", result.accel_value, "| timestamp:", result.timestamp);
 
-    //             const data = await getLatestObstacle(user_id, walkerId);
+        if (is_moving >= THRESHOLD && !isCounting) {
+            console.log("🚶 Harakat boshlandi (is_moving=1)");
+            toast.success("활동시간이 시작되었습니다!");
+            startCounting();
+        } else if (is_moving <= 0 && isCounting) {
+            console.log("🛑 Harakat tugadi (is_moving=0)");
+            toast.success("활동시간이 저장되었습니다!");
+            stopCounting();
+        }
+    }, 2000);
 
-    //             if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
-    //                 lastObstacleId.current = data.obstacle_id;
-    //                 const obstacleClean = data.obstacle_type.replace(/[\[\]']/g, "");
-    //                 showWarning(obstacleClean, data.obstacle_id);
-    //             }
-    //         } catch (err) {
-    //             console.error("Obstacle error:", err);
-    //         }
-    //     }, 3000);
+    return () => clearInterval(movementInterval);
+}, [user_id, isCounting]);
 
-    //     return () => {
-    //         clearInterval(intervalRef);
-    //     };
-    // }, [user_id]);
+
+   
+
+
+        // ✅ 2. 장애물 감지 aniqlovchi useEffect
      useEffect(() => {
         if (!user_id) return navigate("/login");
         //  getUserHeartrate(user_id);
@@ -133,10 +121,6 @@ function ActivityPage({walker_id = "walker001"}) {
     }, [user_id]);
 
 
-    
-
-
-
     const handlePreviousClick = () => {
         navigate("/heart");
     };
@@ -161,7 +145,7 @@ function ActivityPage({walker_id = "walker001"}) {
                         <div className="w-[400px] h-[400px] bg-[#CCF8FE] rounded-full m-auto flex items-center justify-center border-[20px] border-[#02A0FC]">
                             <span className="text-[80px] font-bold text-[#02A0FC]">
                                 {minutes}분 {seconds < 10 ? `0${seconds}` : seconds}초
-                            </span>
+                            </span>            
                         </div>
                         <div>
                             <button
@@ -172,7 +156,6 @@ function ActivityPage({walker_id = "walker001"}) {
                             </button>
                         </div>
                     </div>
-                    {/* Tugmalar olib tashlandi */}
                 </div>
             </div>
         </div>

@@ -2,38 +2,52 @@ import { useEffect, useRef } from "react";
 import stopPng from "../assets/stopWarning.png";
 import cautionPng from "../assets/cautionWarning.png";
 import slowPng from "../assets/slowWarning.png";
-import alarmSound from "../assets/alarm.mp3";
+import stopAlarm from "../assets/alarm.mp3";
+// import stopAlarm from "../assets/stopAlarm.mp3";
+import slowAlarm from "../assets/slowAlarm.mp3";
+import cautionAlarm from "../assets/cautionAlarm.mp3";
 
 const WarningModal = ({ obstacle, onClose }) => {
     const audioRef = useRef(null);
     const timeoutRef = useRef(null); // <-- Timeout ref
-    const { alert_level, obstacle_type, risk_score } = obstacle;
+    const { alert_level, obstacle_type } = obstacle;
+
+    // alert_level ga qarab audio tanlash
+    const getAudioByLevel = () => {
+        switch (alert_level) {
+            case "STOP":
+                return stopAlarm;
+            case "CAUTION":
+                return cautionAlarm;
+            case "SLOW":
+                return slowAlarm;
+            default:
+                return null;
+        }
+    };
 
     useEffect(() => {
-        // Alarmni chalish
-        if (alert_level && alert_level !== "NORMAL" && audioRef.current) {
-            audioRef.current.play().catch((err) => console.error(err));
+        const sound = getAudioByLevel();
+        if (sound && audioRef.current) {
+            audioRef.current.src = sound;
+            audioRef.current.play().catch((err) =>
+                console.warn("Autoplay blocklandi:", err)
+            );
         }
 
         // 5 sekunddan keyin avtomatik yopish
         timeoutRef.current = setTimeout(() => {
             onClose();
-        }, 5000);
+        }, 3000);
 
         return () => {
             if (audioRef.current) {
                 audioRef.current.pause();
                 audioRef.current.currentTime = 0;
             }
-            // Timeoutni tozalash
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
         };
     }, [alert_level, onClose]);
-
-    const handleClose = () => {
-        if (timeoutRef.current) clearTimeout(timeoutRef.current); // Timeoutni bekor qilish
-        onClose();
-    };
 
     const formatObstacleType = (value) => {
         if (!value) return "알 수 없음";
@@ -46,6 +60,7 @@ const WarningModal = ({ obstacle, onClose }) => {
             motorcycle: "오토바이",
             "Traffic Light": "신호등",
             bollard: "기둥",
+            bollardbollardbollard: "기둥",
             upperbody: "사람 접근중",
         };
         try {
@@ -115,7 +130,7 @@ const WarningModal = ({ obstacle, onClose }) => {
                 zIndex: 1000,
             }}
         >
-            <audio ref={audioRef} src={alarmSound} loop />
+            <audio ref={audioRef}  loop />
             <div
                 style={{
                     width: "600px",
@@ -171,7 +186,7 @@ const WarningModal = ({ obstacle, onClose }) => {
                 </div>
 
                 <button
-                    onClick={handleClose}
+                    onClick={onClose}
                     style={{
                         width: "100%",
                         padding: "12px",
