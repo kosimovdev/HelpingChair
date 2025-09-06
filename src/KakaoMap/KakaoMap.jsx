@@ -1,7 +1,10 @@
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
-// import previous from "../assets/previousImg.png";
-// import nextLogo from "../assets/nextLogo.png";
+import storage from "../services/storage/index.js";
+import {useWarning} from "../context/WarningContext.jsx";
+import {getLatestObstacle} from "../services/Warning/Warning.jsx";
+
+
 
 const KakaoMapRedirect = () => {
     const mapRef = useRef(null); // DOM element uchun ref
@@ -9,7 +12,44 @@ const KakaoMapRedirect = () => {
     const [startCoords, setStartCoords] = useState(null);
     const [startAddress, setStartAddress] = useState("");
     const [endAddress, setEndAddress] = useState("");
+    const {showWarning} = useWarning();
     const navigate = useNavigate();
+    const user_id = storage.get("user_id");
+    const walkerId = "walker001";
+    const lastObstacleId = useRef(null);
+  
+
+     useEffect(() => {
+        if (!user_id) return navigate("/login");
+        const interval = setInterval(async () => {
+            try {
+                const data = await getLatestObstacle(user_id, walkerId);
+               if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
+                    lastObstacleId.current = data.obstacle_id;
+
+    // obstacle_type ni tozalash (stringdan massivga aylantirish)
+    let obstacleClean;
+    try {
+        obstacleClean = JSON.parse(data.obstacle_type.replace(/'/g, '"'));
+    } catch {
+        obstacleClean = [data.obstacle_type]; 
+    }
+
+    showWarning({
+        alert_level: data.alert_level,
+        obstacle_type: obstacleClean,
+        risk_score: data.risk_score,
+        obstacle_id: data.obstacle_id,
+    });
+}
+            } catch (err) {
+                console.error("Obstacle error:", err);
+            }
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [user_id]);
+
 
     useEffect(() => {
         if (navigator.geolocation) {

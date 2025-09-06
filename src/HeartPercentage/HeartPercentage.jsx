@@ -10,7 +10,7 @@ import {useWarning} from "../context/WarningContext.jsx";
 import {getLatestObstacle} from "../services/Warning/Warning.jsx";
 import alarmAudio from "../assets/alarm.mp3";
 import FallModal from "../FallModal/FallModal.jsx";
-import {BarLoader , DotLoader } from "react-spinners";
+import { DotLoader } from "react-spinners";
 
 function HeartPercentage() {
     const [bpm, setBpm] = useState([]);
@@ -33,11 +33,24 @@ function HeartPercentage() {
         const interval = setInterval(async () => {
             try {
                 const data = await getLatestObstacle(user_id, walkerId);
-                if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
+               if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
                     lastObstacleId.current = data.obstacle_id;
-                    const obstacleClean = data.obstacle_type.replace(/[\[\]']/g, "");
-                    showWarning(obstacleClean, data.obstacle_id);
-                }
+
+    // obstacle_type ni tozalash (stringdan massivga aylantirish)
+    let obstacleClean;
+    try {
+        obstacleClean = JSON.parse(data.obstacle_type.replace(/'/g, '"'));
+    } catch {
+        obstacleClean = [data.obstacle_type]; 
+    }
+
+    showWarning({
+        alert_level: data.alert_level,
+        obstacle_type: obstacleClean,
+        risk_score: data.risk_score,
+        obstacle_id: data.obstacle_id,
+    });
+}
             } catch (err) {
                 console.error("Obstacle error:", err);
             }
@@ -51,8 +64,8 @@ function HeartPercentage() {
     try {
         const fallAlert = await user.getWarning(user_id, walkerId);
 
-        console.log("Alert ID from server:", fallAlert?.alert_id);
-        console.log(fallAlert)
+        // console.log("Alert ID from server:", fallAlert?.alert_id);
+        // console.log(fallAlert)
         if (
             fallAlert?.fall_detected &&
             fallAlert?.alert_id !== null &&
@@ -61,7 +74,7 @@ function HeartPercentage() {
             setWarningData(fallAlert);
             setIsModalOpen2(true);
         } else {
-            console.log("No new fall alert or already dismissed.");
+            // console.log("No new fall alert or already dismissed.");
         }
     } catch (error) {
         console.error("Error fetching fall alert:", error);
@@ -120,7 +133,7 @@ function HeartPercentage() {
         }
     };
     
-    const handlePreviousClick = () => navigate("/");
+    const handlePreviousClick = () => navigate("/home");
     const handleNextClick = () => navigate("/activity");
 
     return (
@@ -158,23 +171,6 @@ function HeartPercentage() {
                         <span className="w-[40px] h-[40px] bg-green-600 rounded-full inline-block mr-2"></span> BPM
                     </p>
                     <audio ref={audioRef} src={alarmAudio} preload="auto" />
-
-                    {/* 🎵 Audio o‘ynatish tugmasi */}
-                    {/* <div className="mt-6 flex justify-center">
-                        <button
-                            onClick={() => {
-                                if (audioRef.current) {
-                                    audioRef.current.currentTime = 0;
-                                    audioRef.current.play().catch((err) => {
-                                        console.warn("Audio play error:", err);
-                                    });
-                                }
-                            }}
-                            className="px-6 py-3 bg-green-600 text-white rounded-xl text-xl hover:bg-green-700 transition"
-                        >
-                            ▶️ Ovoz eshittirish
-                        </button>
-                    </div> */}
 
                     {/* 🔘 Chartni ko‘rsatish tugmasi */}
                     <div className="relative top-[-320px] left-0">

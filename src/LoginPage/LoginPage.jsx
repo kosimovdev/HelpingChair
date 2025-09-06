@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-import "./LoginStyle.scss";
+import  {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import storage from "../services/storage/index.js";
 
@@ -58,7 +57,6 @@ export default function login() {
                                     value={contact}
                                     onChange={(e) => setContact(e.target.value)}
                                     autoComplete="current-password"
-
                                     placeholder="핸드폰번호"
                                     className="block w-full h-[50px] rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                 />

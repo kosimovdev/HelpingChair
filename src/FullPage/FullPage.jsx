@@ -1,10 +1,16 @@
-import { useEffect } from "react";
+import { useEffect , useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HeartPulse, Clock, MapPin, Camera } from "lucide-react"; // 🔹 lucide-react iconlar
 import storage from "../services/storage/storage";
+import { useWarning } from "../context/WarningContext.jsx";
+import { getLatestObstacle } from "../services/Warning/Warning.jsx";
 
 export default function FullPage() {
     const user_id = storage.get("user_id");
+    const lastObstacleId = useRef(null);
+    const { showWarning } = useWarning();
+    const walkerId = "walker001";
+
     const navigate = useNavigate();
   const menus = [
     { id: 1, title: "심박수", path: "/heart" , icon:<HeartPulse size={140} className="text-[#fff]" /> ,  bgColor:"bg-red-500"},
@@ -14,12 +20,37 @@ export default function FullPage() {
   ];
 
   useEffect(() => {
-    console.log("User ID:", user_id);
-    if(!user_id) {
-      console.error("User ID is not available.");
-      return navigate("/login");
+        if (!user_id) return navigate("/login");
+        const interval = setInterval(async () => {
+            try {
+                const data = await getLatestObstacle(user_id, walkerId);
+               if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
+                    lastObstacleId.current = data.obstacle_id;
+
+    // obstacle_type ni tozalash (stringdan massivga aylantirish)
+    let obstacleClean;
+    try {
+        obstacleClean = JSON.parse(data.obstacle_type.replace(/'/g, '"'));
+    } catch {
+        obstacleClean = [data.obstacle_type]; 
     }
-  }, [user_id]);
+
+    showWarning({
+        alert_level: data.alert_level,
+        obstacle_type: obstacleClean,
+        risk_score: data.risk_score,
+        obstacle_id: data.obstacle_id,
+    });
+}
+            } catch (err) {
+                console.error("Obstacle error:", err);
+            }
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [user_id]);
+
+ 
 
   return (
     <div className="flex items-center justify-center  p-2">

@@ -13,6 +13,8 @@ import KakaoMap from "./KakaoMap/KakaoMap.jsx";
 import UsersList from "./UsersList/userList.jsx";
 import WarningModal from "./WarningModal/Warningmodal.jsx";
 import FullPage from "./FullPage/FullPage.jsx";
+import SplashScreen from "./SplashScreen/SplashScreen.jsx";
+import NewLogin from "./Login/LoginPage.jsx";
 
 function App() {
    
@@ -20,14 +22,16 @@ function App() {
         <>
                 <WarningProvider>
                     <Routes>
-                        <Route path="/" element={<FullPage />} />
+                        <Route path="/" element={<SplashScreen />} />
+                         <Route path="/home" element={<FullPage />} />
                         <Route path="/heart" element={<HeartPercentage />} />
                         <Route path="/activity" element={<ActivityPage />} />
                         <Route path="/map" element={<KakaoMap />} />
                         <Route path="/camera" element={<CameraCard />} />
                         <Route path="/users" element={<UsersList />} />
-                        <Route path="/login" element={<LoginPage />} />
-                          <Route path="/warning" element={<WarningModal />} />
+                        <Route path="/thenLoginPage" element={<LoginPage />} />
+                        <Route path="/login" element={<NewLogin />} />
+                        <Route path="/warning" element={<WarningModal />} />
                         <Route path="*" element={<NotFound />} /> {/* 404 page*/}
                     </Routes>
                     <GlobalWarningModal />

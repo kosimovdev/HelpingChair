@@ -75,31 +75,63 @@ function ActivityPage({walker_id = "walker001"}) {
     
     
 
-    // ✅ 2. Obstacle aniqlovchi useEffect (mavjud bo‘lib qoladi)
-    useEffect(() => {
-        if (!user_id) {
-            return navigate("/login");
-        }
-        const intervalRef = setInterval(async () => {
+    // // ✅ 2. Obstacle aniqlovchi useEffect (mavjud bo‘lib qoladi)
+    // useEffect(() => {
+    //     if (!user_id) {
+    //         return navigate("/login");
+    //     }
+    //     const intervalRef = setInterval(async () => {
+    //         try {
+    //             if (!user_id) return;
+
+    //             const data = await getLatestObstacle(user_id, walkerId);
+
+    //             if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
+    //                 lastObstacleId.current = data.obstacle_id;
+    //                 const obstacleClean = data.obstacle_type.replace(/[\[\]']/g, "");
+    //                 showWarning(obstacleClean, data.obstacle_id);
+    //             }
+    //         } catch (err) {
+    //             console.error("Obstacle error:", err);
+    //         }
+    //     }, 3000);
+
+    //     return () => {
+    //         clearInterval(intervalRef);
+    //     };
+    // }, [user_id]);
+     useEffect(() => {
+        if (!user_id) return navigate("/login");
+        //  getUserHeartrate(user_id);
+        const interval = setInterval(async () => {
             try {
-                if (!user_id) return;
-
                 const data = await getLatestObstacle(user_id, walkerId);
-
-                if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
+               if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
                     lastObstacleId.current = data.obstacle_id;
-                    const obstacleClean = data.obstacle_type.replace(/[\[\]']/g, "");
-                    showWarning(obstacleClean, data.obstacle_id);
-                }
+
+    // obstacle_type ni tozalash (stringdan massivga aylantirish)
+    let obstacleClean;
+    try {
+        obstacleClean = JSON.parse(data.obstacle_type.replace(/'/g, '"'));
+    } catch {
+        obstacleClean = [data.obstacle_type]; 
+    }
+
+    showWarning({
+        alert_level: data.alert_level,
+        obstacle_type: obstacleClean,
+        risk_score: data.risk_score,
+        obstacle_id: data.obstacle_id,
+    });
+}
             } catch (err) {
                 console.error("Obstacle error:", err);
             }
         }, 3000);
 
-        return () => {
-            clearInterval(intervalRef);
-        };
+        return () => clearInterval(interval);
     }, [user_id]);
+
 
     
 

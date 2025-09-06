@@ -6,7 +6,7 @@ const GlobalWarningModal = () => {
 
     if (!obstacle) return null;
 
-    return <WarningModal obstacleType={obstacle} onClose={hideWarning} />;
+    return <WarningModal obstacle={obstacle} onClose={hideWarning} />;
 };
 
 export default GlobalWarningModal;

@@ -6,7 +6,7 @@ import MJPEGPlayer from "../MJPEGPlayer/MJPEGPlayer.jsx";
 
 const CameraFeed = () => {
     const lastObstacleId = useRef(null);
-    const userId = localStorage.getItem("user_id");
+    const user_id = localStorage.getItem("user_id");
     const walkerId = "walker001";
     const {showWarning} = useWarning();
     const navigate = useNavigate();
@@ -14,25 +14,36 @@ const CameraFeed = () => {
     const streamUrl1 = " https://scholar-crack-bike-warehouse.trycloudflare.com/?action=stream";
     const streamUrl2 = " https://setup-anne-watch-exotic.trycloudflare.com/?action=stream"; 
 
-    useEffect(() => {
+   useEffect(() => {
+        if (!user_id) return navigate("/login");
         const interval = setInterval(async () => {
             try {
-                if (!userId) return;
-
-                const data = await getLatestObstacle(userId, walkerId);
-                console.log("xavf aniqlandi", data.is_detected);
-                if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
+                const data = await getLatestObstacle(user_id, walkerId);
+               if (data.is_detected === 1 && data.obstacle_id !== lastObstacleId.current) {
                     lastObstacleId.current = data.obstacle_id;
-                    const obstacleClean = data.obstacle_type.replace(/[\[\]']/g, "");
-                    showWarning(obstacleClean, data.obstacle_id);
-                }
+
+    // obstacle_type ni tozalash (stringdan massivga aylantirish)
+    let obstacleClean;
+    try {
+        obstacleClean = JSON.parse(data.obstacle_type.replace(/'/g, '"'));
+    } catch {
+        obstacleClean = [data.obstacle_type]; 
+    }
+
+    showWarning({
+        alert_level: data.alert_level,
+        obstacle_type: obstacleClean,
+        risk_score: data.risk_score,
+        obstacle_id: data.obstacle_id,
+    });
+}
             } catch (err) {
                 console.error("Obstacle error:", err);
             }
-        }, 1000);
+        }, 3000);
 
         return () => clearInterval(interval);
-    }, [userId, walkerId, showWarning]);
+    }, [user_id]);
 
     const handlePreviousClick = () => navigate("/map");
     const handleNextClick = () => navigate("/");
