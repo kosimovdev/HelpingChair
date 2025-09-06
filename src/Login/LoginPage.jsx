@@ -23,7 +23,13 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-400 via-green-500 to-green-600 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
+      <div className="absolute top-20 left-10 w-32 h-32 bg-green-300 bg-opacity-20 rounded-full"></div>
+      <div className="absolute top-40 right-20 w-48 h-48 bg-green-300 bg-opacity-15 rounded-full"></div>
+      <div className="absolute bottom-32 left-20 w-40 h-40 bg-green-300 bg-opacity-10 rounded-full"></div>
+      <div className="absolute bottom-20 right-10 w-56 h-56 bg-green-300 bg-opacity-12 rounded-full"></div>
+      <div className="absolute top-60 left-1/4 w-24 h-24 bg-green-300 bg-opacity-18 rounded-full"></div>
+      <div className="max-w-md w-full relative">
+               
         <form onSubmit={handleLogin} className="space-y-6">
           {/* Camera Icon */}
           <div className="flex justify-center mb-8">
