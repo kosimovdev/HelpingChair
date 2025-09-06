@@ -155,7 +155,7 @@ function HeartPercentage() {
 
                         <div className="mx-4 w-[400px] h-[400px] bg-[#E2FBD7] rounded-full flex items-center justify-center border-[20px] border-green-600">
                             <span className="text-[80px] font-bold text-green-700">
-                                {loading ? <DotLoader color="#02920c" size={100} /> : bpm?.[0]?.heartrate ?? "N/A"}
+                                {loading ? bpm?.[0]?.heartrate ?? "loading..."  : bpm?.[0]?.heartrate ?? "loading..."}
                             </span>
                         </div>
 

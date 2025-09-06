@@ -1,4 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
+
+
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
@@ -122,6 +125,7 @@ function ActivityPage({ walker_id = "walker001" }) {
 }
 
 export default ActivityPage;
+
 
 
 
@@ -289,4 +293,9 @@ export default ActivityPage;
 // }
 
 // export default ActivityPage;
+
+
+
+
+
 
