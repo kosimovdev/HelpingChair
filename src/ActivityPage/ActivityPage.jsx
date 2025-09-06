@@ -22,14 +22,14 @@ function ActivityPage({ walker_id = "walker001" }) {
     const handleNextClick = () => navigate("/map");
 
     // 종료 tugmasi (faqat timerni to‘xtatadi)
-    const stopTimer = () => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-        }
-        setIsCounting(false);
-        toast.info("활동시간이 일시정지 되었습니다!");
-    };
+    // const stopTimer = () => {
+    //     if (intervalRef.current) {
+    //         clearInterval(intervalRef.current);
+    //         intervalRef.current = null;
+    //     }
+    //     setIsCounting(false);
+    //     toast.info("활동시간이 일시정지 되었습니다!");
+    // };
 
     // 🔄 Reset tugmasi (0 ga qaytarish)
     const resetTimer = () => {
@@ -106,7 +106,7 @@ function ActivityPage({ walker_id = "walker001" }) {
                                 {minutes}분 {seconds < 10 ? `0${seconds}` : seconds}초
                             </span>
 
-                            {/* 종료 tugmasi */}
+                            {/* 종료 tugmasi
                             {isCounting && (
                                 <button
                                     onClick={stopTimer}
@@ -114,7 +114,7 @@ function ActivityPage({ walker_id = "walker001" }) {
                                 >
                                     종료
                                 </button>
-                            )}
+                            )} */}
 
                             {/* 🔄 Reset tugmasi */}
                            <div className="absolute bottom-[-150px]">
