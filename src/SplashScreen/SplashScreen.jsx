@@ -14,7 +14,7 @@ const SplashScreen = ({
     const timer = setTimeout(() => {
       setLoading(false);
       navigate("/home"); // <-- Asosiy sahifangiz route
-    }, 3000); // 3 soniya
+    }, 10000); // 3 soniya
     return () => clearTimeout(timer);
   }, [navigate]);
   return (
