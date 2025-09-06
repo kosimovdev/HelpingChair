@@ -24,14 +24,14 @@ function ActivityPage({ walker_id = "walker001" }) {
     const handleNextClick = () => navigate("/map");
 
     // ⏱️ 종료 tugmasi (faqat timerni to‘xtatadi, backendga yubormaydi)
-    const stopTimer = () => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-        }
-        setIsCounting(false);
-        toast.info("활동시간이 일시정지 되었습니다!");
-    };
+    // const stopTimer = () => {
+    //     if (intervalRef.current) {
+    //         clearInterval(intervalRef.current);
+    //         intervalRef.current = null;
+    //     }
+    //     setIsCounting(false);
+    //     toast.info("활동시간이 일시정지 되었습니다!");
+    // };
 
     // ✅ is_moving bo‘yicha avtomatik hisoblash
     useEffect(() => {
@@ -98,14 +98,14 @@ function ActivityPage({ walker_id = "walker001" }) {
                             </span>
 
                             {/* 종료 tugmasi */}
-                            {isCounting && (
+                            {/* {isCounting && (
                                 <button
                                     onClick={stopTimer}
                                     className="mt-6 px-6 py-3 bg-red-500 text-white font-bold rounded-2xl shadow-lg hover:bg-red-600"
                                 >
                                     종료
                                 </button>
-                            )}
+                            )} */}
                         </div>
 
                         {/* 다음 */}
