@@ -14,7 +14,7 @@ const SplashScreen = ({
     const timer = setTimeout(() => {
       setLoading(false);
       navigate("/home"); // <-- Asosiy sahifangiz route
-    }, 10000); // 3 soniya
+    }, 1000000); // 3 soniya
     return () => clearTimeout(timer);
   }, [navigate]);
   return (
@@ -40,7 +40,7 @@ const SplashScreen = ({
         {/* Central icon */}
         <div className="mb-14 mt-2">
           <div className="w-full h-full p-5  border-white border-opacity-60 flex items-center justify-center mb-4">
-            <div className="w-[300px] h-[300px] border-[4px] border-white bg-green-600 border-opacity-40 rounded-full flex items-center justify-center">
+            <div className="w-[300px] h-[300px] border-[4px] border-white bg-[#fff] border-opacity-40 rounded-full flex items-center justify-center">
               <img src={logo} alt="Logo" className="w-[200px] " />
             </div>
           </div>

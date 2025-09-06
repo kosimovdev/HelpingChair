@@ -27,16 +27,16 @@ const LoginPage = () => {
         <form onSubmit={handleLogin} className="space-y-6">
           {/* Camera Icon */}
           <div className="flex justify-center mb-8">
-            <div className="w-[170px] h-[170px] bg-[#fff] bg-opacity-50 rounded-full flex items-center justify-center">
+            <div className="w-[250px] h-[250px] bg-[#fff] bg-opacity-50 rounded-full flex items-center justify-center">
              
-              <img src={logo} alt="logo" className='w-[170px] ' />
+              <img src={logo} alt="logo" className='w-[220px] ' />
             </div>
           </div>
 
           {/* Username Input */}
           <div className="relative">
             <div className="absolute  inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <UserIcon className="h-5 w-5 text-green-600" />
+              <UserIcon className="h-[35px] w-[35px] text-green-600 mr-[20px]" />
             </div>
             <input
               id="userId"
@@ -46,14 +46,14 @@ const LoginPage = () => {
               required
               onChange={(e) => setUserId(e.target.value)}
               placeholder="아이디"
-              className="w-full pl-12 pr-4 py-3 bg-[#fff] bg-opacity-50 border-0 rounded-[15px] placeholder-[#000] text-[#000] focus:outline-none focus:ring-2 focus:ring-[#000] focus:bg-opacity-70"
+              className="w-full pl-12 pr-4 py-3 pl-[60px] text-[20px] bg-[#fff] bg-opacity-50 border-0 rounded-[15px] placeholder-[#000] text-[#000] focus:outline-none focus:ring-2 focus:ring-[#000] focus:bg-opacity-70"
             />
           </div>
 
           {/* Password Input */}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <LockIcon className="h-5 w-5 text-green-600" />
+              <LockIcon className="w-[35px] h-[35px] text-green-600" />
             </div>
             <input
                id="contact"
@@ -64,7 +64,7 @@ const LoginPage = () => {
               onChange={(e) => setContact(e.target.value)}
               placeholder="핸드폰번호"
               autoComplete="current-password"
-              className="w-full pl-12 pr-4 py-3 bg-[#fff] bg-opacity-50 border-0 rounded-[15px] placeholder-[#000] text-[#000] focus:outline-none focus:ring-2 focus:ring-[#000] focus:bg-opacity-70"
+              className="w-full pl-12 pr-4 py-3 pl-[60px] text-[20px] bg-[#fff] bg-opacity-50 border-0 rounded-[15px] placeholder-[#000] text-[#000] focus:outline-none focus:ring-2 focus:ring-[#000] focus:bg-opacity-70"
             />
              {error && <p className={"text-red-500 text-center"}>{error}</p>}
           </div>
@@ -89,7 +89,7 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-purple-800 rounded-[15px] hover:bg-purple-900 text-white font-semibold py-3 px-4 transition duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            className="w-full bg-purple-800 rounded-[15px] hover:bg-purple-900 text-white font-semibold py-4 text-[20px] px-4 transition duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
           >
             {loading ? "로그인중..." : "확인"}
           </button>
