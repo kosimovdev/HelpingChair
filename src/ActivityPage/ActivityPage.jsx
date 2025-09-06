@@ -120,7 +120,7 @@ function ActivityPage({ walker_id = "walker001" }) {
                            <div className="absolute bottom-[-150px]">
                              <button
                                 onClick={resetTimer}
-                                className=" px-6 py-3 bg-gray-500 text-white font-bold rounded-2xl shadow-lg hover:bg-gray-600"
+                                className=" px-[55px] text-[27px] py-5 bg-gray-500 text-white font-bold rounded-[25px] shadow-lg hover:bg-gray-600"
                             >
                                 초기화
                             </button>
