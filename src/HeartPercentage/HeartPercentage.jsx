@@ -89,11 +89,12 @@ function HeartPercentage() {
     }
 
     const interval = setInterval(() => {
+        getUserHeartrate(user_id);
         getFallAlert();
-    }, 10000); 
+    }, 1000); 
 
     return () => clearInterval(interval);
-}, [user_id, walkerId]); // Faqat user_id va walkerId ga bog‘liq
+}, [user_id, walkerId ]); // Faqat user_id va walkerId ga bog‘liq
 
 
    const handleCloseModal = () => {
