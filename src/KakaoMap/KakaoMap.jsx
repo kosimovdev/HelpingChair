@@ -26,6 +26,7 @@ const KakaoMapRedirect = () => {
   const [dismissedAlertId, setDismissedAlertId] = useState(null);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [warningData, setWarningData] = useState(null);
+  const inputRef = useRef(null);
 
   // Fall alert
   const getFallAlert = async () => {
@@ -221,6 +222,13 @@ const KakaoMapRedirect = () => {
     return () => clearInterval(interval);
   }, []);
 
+  
+
+useEffect(() => {
+  inputRef.current?.focus();
+}, []);
+
+
   const handlePreviousClick = () => navigate("/activity");
   const handleNextClick = () => navigate("/camera");
 
@@ -247,6 +255,8 @@ const KakaoMapRedirect = () => {
           placeholder="장소*주소*버스 검색 "
           value={endAddress}
           onChange={(e) => setEndAddress(e.target.value)}
+          ref={inputRef}
+           onFocus={() => console.log("Input focused")}
           className="border p-2 rounded w-full h-[50px]"
         />
         <button
