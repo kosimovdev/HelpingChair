@@ -149,7 +149,7 @@ const KakaoMapRedirect = () => {
                 },
                 (error) => {
                     console.error("Geolocation error:", error);
-                    alert("Joylashuvni aniqlab bo‘lmadi.");
+                    alert("현위치를 알수없음.");
                 }
             );
         } else {
