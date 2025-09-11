@@ -58,7 +58,7 @@ const CameraFeed = () => {
                 const fallAlert = await user.getWarning(user_id, walkerId);
 
         // console.log("Alert ID from server:", fallAlert?.alert_id);
-        console.log(fallAlert)
+        // console.log(fallAlert)
         if (
             fallAlert?.fall_detected &&
             fallAlert?.alert_id !== null &&
