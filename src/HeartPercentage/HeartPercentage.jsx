@@ -191,7 +191,7 @@ function HeartPercentage() {
                     <div className="bg-white p-6 rounded-2xl shadow-xl w-[90%] max-w-4xl relative top-[-4%]">
                         <button
                             onClick={() => setIsModalOpen(false)}
-                            className="absolute top-3 right-3 text-xl font-bold text-gray-500 hover:text-black"
+                            className="absolute top-3 right-3 text-[20px] font-bold text-gray-500 hover:text-black"
                         >
                             ×
                         </button>
@@ -225,6 +225,7 @@ function HeartPercentage() {
                 </div>
             )}
             {isModalOpen2 && (
+
        <FallModal
         obstacleType={warningData.timestamp}
         obstacleId={warningData.alert_id}
@@ -238,3 +239,4 @@ function HeartPercentage() {
 }
 
 export default HeartPercentage;
+

@@ -6,11 +6,13 @@ import stopAlarm from "../assets/alarm.mp3";
 // import stopAlarm from "../assets/stopAlarm.mp3";
 import slowAlarm from "../assets/slowAlarm.mp3";
 import cautionAlarm from "../assets/cautionAlarm.mp3";
+import { useWarning } from "../context/WarningContext";
 
 const WarningModal = ({ obstacle, onClose }) => {
     const audioRef = useRef(null);
     const timeoutRef = useRef(null); // <-- Timeout ref
     const { alert_level, obstacle_type } = obstacle;
+     const { hideWarning } = useWarning(); // <-- contextdan olamiz
 
     // alert_level ga qarab audio tanlash
     const getAudioByLevel = () => {
@@ -186,7 +188,7 @@ const WarningModal = ({ obstacle, onClose }) => {
                 </div>
 
                 <button
-                    onClick={onClose}
+                    onClick={() => hideWarning(obstacle.obstacle_id)}
                     style={{
                         width: "100%",
                         padding: "12px",

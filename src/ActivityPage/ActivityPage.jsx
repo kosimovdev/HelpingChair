@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
 import accelerometerService from "../services/ActivityTime2/ActivityTime2.jsx";
 import { toast } from "react-toastify";
+import FallModal from "../FallModal/FallModal.jsx";
+import user from "../services/Auth/Auth.jsx";
 
 function ActivityPage({ walker_id = "walker001" }) {
     const [elapsedTime, setElapsedTime] = useState(0); // Umumiy hisob
@@ -13,6 +14,10 @@ function ActivityPage({ walker_id = "walker001" }) {
     const lastTimestamp = useRef(null); // Takroriy timestampni oldini olish
     const navigate = useNavigate();
     const user_id = localStorage.getItem("user_id");
+    const [dismissedAlertId, setDismissedAlertId] = useState(null);
+    const [isModalOpen2, setIsModalOpen2] = useState(false);
+    const walkerId = "walker001";
+    const [warningData, setWarningData] = useState(null);
 
     const minutes = Math.floor(elapsedTime / 60);
     const seconds = elapsedTime % 60;
@@ -21,15 +26,7 @@ function ActivityPage({ walker_id = "walker001" }) {
     const handlePreviousClick = () => navigate("/heart");
     const handleNextClick = () => navigate("/map");
 
-    // 종료 tugmasi (faqat timerni to‘xtatadi)
-    // const stopTimer = () => {
-    //     if (intervalRef.current) {
-    //         clearInterval(intervalRef.current);
-    //         intervalRef.current = null;
-    //     }
-    //     setIsCounting(false);
-    //     toast.info("활동시간이 일시정지 되었습니다!");
-    // };
+   
 
     // 🔄 Reset tugmasi (0 ga qaytarish)
     const resetTimer = () => {
@@ -83,6 +80,53 @@ function ActivityPage({ walker_id = "walker001" }) {
         return () => clearInterval(movementInterval);
     }, [user_id, isCounting, walker_id]);
 
+        const getFallAlert = async () => {
+            try {
+                const fallAlert = await user.getWarning(user_id, walkerId);
+
+        // console.log("Alert ID from server:", fallAlert?.alert_id);
+        console.log(fallAlert)
+        if (
+            fallAlert?.fall_detected &&
+            fallAlert?.alert_id !== null &&
+            Number(fallAlert.alert_id) !== Number(localStorage.getItem("dismissedAlertId"))
+        ) {
+            setWarningData(fallAlert);
+            setIsModalOpen2(true);
+        } else {
+            // console.log("No new fall alert or already dismissed.");
+        }
+    } catch (error) {
+        console.error("Error fetching fall alert:", error);
+    }
+};
+
+
+  useEffect(() => {
+    const saved = localStorage.getItem("dismissedAlertId");
+    if (saved) {
+        setDismissedAlertId(Number(saved));
+    }
+
+    const interval = setInterval(() => {
+        getFallAlert();
+    }, 1000); 
+
+    return () => clearInterval(interval);
+}, [user_id, walkerId ]); // Faqat user_id va walkerId ga bog‘liq
+
+
+   const handleCloseModal = () => {
+    setIsModalOpen2(false);
+    if (warningData?.alert_id !== null) {
+        const alertId = Number(warningData.alert_id);
+        localStorage.setItem("dismissedAlertId", alertId);
+        console.log("Dismissed alert ID saved:", alertId);
+        console.log(warningData.timestamp)
+        setDismissedAlertId(alertId); // baribir ishlaydi, lekin bu second layer
+    }
+};
+
     return (
         <div className="activity mx-auto">
             <div className="activityMainDiv flex flex-col items-center justify-center">
@@ -105,16 +149,6 @@ function ActivityPage({ walker_id = "walker001" }) {
                             <span className="text-[80px] font-bold text-[#02A0FC]">
                                 {minutes}분 {seconds < 10 ? `0${seconds}` : seconds}초
                             </span>
-
-                            {/* 종료 tugmasi
-                            {isCounting && (
-                                <button
-                                    onClick={stopTimer}
-                                    className="mt-6 px-6 py-3 bg-red-500 text-white font-bold rounded-2xl shadow-lg hover:bg-red-600"
-                                >
-                                    종료
-                                </button>
-                            )} */}
 
                             {/* 🔄 Reset tugmasi */}
                            <div className="absolute bottom-[-150px]">
@@ -139,7 +173,20 @@ function ActivityPage({ walker_id = "walker001" }) {
                     </div>
                 </div>
             </div>
+
+                   {isModalOpen2 && (
+                
+       <FallModal
+        obstacleType={warningData.timestamp}
+        obstacleId={warningData.alert_id}
+        onClose={handleCloseModal}
+        user_id={user_id}
+        walker_id={walkerId}
+    />
+)}
         </div>
+
+          
     );
 }
 
