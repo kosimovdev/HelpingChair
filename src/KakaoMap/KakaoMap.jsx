@@ -106,56 +106,114 @@ const KakaoMapRedirect = () => {
         return () => clearInterval(interval);
     }, [user_id]);
 
-    // Map va marker yaratish
     useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    setStartCoords({ lat, lng });
+    const script = document.createElement("script");
+    script.async = true;
+    script.src =
+        "https://dapi.kakao.com/v2/maps/sdk.js?appkey=a700f422b9e4da580b9847f15fce2177&libraries=services&autoload=false";
+    document.head.appendChild(script);
 
-                    const script = document.createElement("script");
-                    script.async = true;
-                    script.src =
-                        "https://dapi.kakao.com/v2/maps/sdk.js?appkey=a700f422b9e4da580b9847f15fce2177&libraries=services&autoload=false";
-                    document.head.appendChild(script);
+    script.onload = () => {
+        window.kakao.maps.load(() => {
+            const container = mapRef.current;
 
-                    script.onload = () => {
-                        window.kakao.maps.load(() => {
-                            const container = mapRef.current;
-                            const options = {
-                                center: new window.kakao.maps.LatLng(lat, lng),
-                                level: 3,
-                            };
-                            const map = new window.kakao.maps.Map(container, options);
-                            mapInstance.current = map;
+            // GPS yo‘q bo‘lsa default koordinatalar (Seul)
+            let lat = 37.5665;
+            let lng = 126.9780;
 
-                            const marker = new window.kakao.maps.Marker({
-                                map,
-                                position: new window.kakao.maps.LatLng(lat, lng),
-                            });
-                            markerInstance.current = marker;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        lat = position.coords.latitude;
+                        lng = position.coords.longitude;
+                        setStartCoords({ lat, lng });
+                    },
+                    (error) => {
+                        console.warn("Geolocation error, using default location:", error);
+                        setStartCoords({ lat, lng });
+                    }
+                );
+            } else {
+                setStartCoords({ lat, lng });
+            }
 
-                            const geocoder = new window.kakao.maps.services.Geocoder();
-                            geocoder.coord2Address(lng, lat, (result, status) => {
-                                if (status === window.kakao.maps.services.Status.OK) {
-                                    const address = result[0].address.address_name;
-                                    setStartAddress(address);
-                                }
-                            });
-                        });
-                    };
-                },
-                (error) => {
-                    console.error("Geolocation error:", error);
-                    alert("현위치를 알수없음.");
+            const options = {
+                center: new window.kakao.maps.LatLng(lat, lng),
+                level: 3,
+            };
+            const map = new window.kakao.maps.Map(container, options);
+            mapInstance.current = map;
+
+            const marker = new window.kakao.maps.Marker({
+                map,
+                position: new window.kakao.maps.LatLng(lat, lng),
+            });
+            markerInstance.current = marker;
+
+            const geocoder = new window.kakao.maps.services.Geocoder();
+            geocoder.coord2Address(lng, lat, (result, status) => {
+                if (status === window.kakao.maps.services.Status.OK) {
+                    const address = result[0].address.address_name;
+                    setStartAddress(address);
                 }
-            );
-        } else {
-            alert("Brauzeringiz geolokatsiyani qo‘llab-quvvatlamaydi.");
-        }
-    }, []);
+            });
+        });
+    };
+}, []);
+
+
+    // Map va marker yaratish
+    // useEffect(() => {
+    //     if (navigator.geolocation) {
+    //         navigator.geolocation.getCurrentPosition(
+    //             (position) => {
+    //                 const lat = position.coords.latitude;
+    //                 const lng = position.coords.longitude;
+    //                 setStartCoords({ lat, lng });
+
+    //                 const script = document.createElement("script");
+    //                 script.async = true;
+    //                 script.src =
+    //                     "https://dapi.kakao.com/v2/maps/sdk.js?appkey=a700f422b9e4da580b9847f15fce2177&libraries=services&autoload=false";
+    //                 document.head.appendChild(script);
+
+    //                 script.onload = () => {
+    //                     window.kakao.maps.load(() => {
+    //                         const container = mapRef.current;
+    //                         const options = {
+    //                             center: new window.kakao.maps.LatLng(lat, lng),
+    //                             level: 3,
+    //                         };
+    //                         const map = new window.kakao.maps.Map(container, options);
+    //                         mapInstance.current = map;
+
+    //                         const marker = new window.kakao.maps.Marker({
+    //                             map,
+    //                             position: new window.kakao.maps.LatLng(lat, lng),
+    //                         });
+    //                         markerInstance.current = marker;
+
+    //                         const geocoder = new window.kakao.maps.services.Geocoder();
+    //                         geocoder.coord2Address(lng, lat, (result, status) => {
+    //                             if (status === window.kakao.maps.services.Status.OK) {
+    //                                 const address = result[0].address.address_name;
+    //                                 setStartAddress(address);
+    //                             }
+    //                         });
+    //                     });
+    //                 };
+    //             },
+    //             (error) => {
+    //                 console.error("Geolocation error:", error);
+    //                 alert("현위치를 알수없음.");
+    //             }
+    //         );
+    //     } else {
+    //         alert("Brauzeringiz geolokatsiyani qo‘llab-quvvatlamaydi.");
+    //     }
+    // }, []);
+
+    
 
     // Joylashuvni yangilash funksiyasi
     const refreshLocation = () => {
@@ -189,17 +247,35 @@ const KakaoMapRedirect = () => {
     };
 
     // Kakao map ga yo‘l ko‘rsatish
-    const openKakaoMap = () => {
-        if (!startCoords || !startAddress || !endAddress) {
-            alert("Iltimos, manzillarni to‘liq kiriting.");
-            return;
-        }
+    // const openKakaoMap = () => {
+    //     if (!startCoords || !startAddress || !endAddress) {
+    //         alert("Iltimos, manzillarni to‘liq kiriting.");
+    //         return;
+    //     }
 
-        const url = `https://map.kakao.com/?sName=${encodeURIComponent(startAddress)}&sX=${startCoords.lng}&sY=${
-            startCoords.lat
-        }&eName=${encodeURIComponent(endAddress)}&target=walk`;
-        window.open(url, "_blank");
-    };
+    //     const url = `https://map.kakao.com/?sName=${encodeURIComponent(startAddress)}&sX=${startCoords.lng}&sY=${
+    //         startCoords.lat
+    //     }&eName=${encodeURIComponent(endAddress)}&target=walk`;
+    //     window.open(url, "_blank");
+    // };
+
+    const openKakaoMap = () => {
+    if (!startCoords || !startAddress || !endAddress) {
+        alert("Iltimos, manzillarni to‘liq kiriting.");
+        return;
+    }
+
+    const url = `https://map.kakao.com/?sName=${encodeURIComponent(startAddress)}&sX=${startCoords.lng}&sY=${
+        startCoords.lat
+    }&eName=${encodeURIComponent(endAddress)}&target=walk`;
+
+    // Current tabga redirect
+    window.location.href = url;
+
+    // Agar yangi tabda ochilishini xohlasangiz:
+    // window.open(url, "_blank");
+};
+
 
     const handlePreviousClick = () => {
         navigate("/activity");

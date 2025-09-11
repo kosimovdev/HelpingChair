@@ -17,7 +17,7 @@ const CameraFeed = () => {
     const [warningData, setWarningData] = useState(null);
 
     const streamUrl1 = "https://insulation-accept-ss-customise.trycloudflare.com/?action=stream";
-    const streamUrl2 = "https://discovered-std-reject-logan.trycloudflare.com/?action=stream"; 
+    const streamUrl2 = "http://172.20.10.9:8080/?action=stream"; 
 
    useEffect(() => {
         if (!user_id) return navigate("/login");
