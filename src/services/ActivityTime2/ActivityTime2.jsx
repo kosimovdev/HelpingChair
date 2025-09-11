@@ -7,6 +7,7 @@ const getLatestAccelerometer = async (user_id, walker_id) => {
             params: {user_id, walker_id},
         });
         console.log("Moving id --->", response.data.is_moving);
+        console.log("API accelerometer javobi:", response.data);
         return response.data;
     } catch (err) {
         console.error("❌ GET accelerometer xato:", err.response || err);

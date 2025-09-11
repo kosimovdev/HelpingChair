@@ -22,11 +22,22 @@ function ActivityPage({ walker_id = "walker001" }) {
     const minutes = Math.floor(elapsedTime / 60);
     const seconds = elapsedTime % 60;
 
+    // 🔹 Persisted timer: Component mount bo‘lganda oldingi vaqtni olish
+    useEffect(() => {
+        const savedTime = localStorage.getItem("elapsedTime");
+        if (savedTime) {
+            setElapsedTime(Number(savedTime));
+        }
+    }, []);
+
+    // 🔹 elapsedTime o‘zgarganda saqlash
+    useEffect(() => {
+        localStorage.setItem("elapsedTime", elapsedTime);
+    }, [elapsedTime]);
+
     // Tugmalar
     const handlePreviousClick = () => navigate("/heart");
     const handleNextClick = () => navigate("/map");
-
-   
 
     // 🔄 Reset tugmasi (0 ga qaytarish)
     const resetTimer = () => {
@@ -35,6 +46,7 @@ function ActivityPage({ walker_id = "walker001" }) {
             intervalRef.current = null;
         }
         setElapsedTime(0);
+        localStorage.removeItem("elapsedTime"); // ⬅ Persisted qiymatni ham o‘chiramiz
         setIsCounting(false);
         toast.success("활동시간이 초기화 되었습니다!");
     };
@@ -80,52 +92,45 @@ function ActivityPage({ walker_id = "walker001" }) {
         return () => clearInterval(movementInterval);
     }, [user_id, isCounting, walker_id]);
 
-        const getFallAlert = async () => {
-            try {
-                const fallAlert = await user.getWarning(user_id, walkerId);
+    // Fall alert
+    const getFallAlert = async () => {
+        try {
+            const fallAlert = await user.getWarning(user_id, walkerId);
 
-        // console.log("Alert ID from server:", fallAlert?.alert_id);
-        console.log(fallAlert)
-        if (
-            fallAlert?.fall_detected &&
-            fallAlert?.alert_id !== null &&
-            Number(fallAlert.alert_id) !== Number(localStorage.getItem("dismissedAlertId"))
-        ) {
-            setWarningData(fallAlert);
-            setIsModalOpen2(true);
-        } else {
-            // console.log("No new fall alert or already dismissed.");
+            if (
+                fallAlert?.fall_detected &&
+                fallAlert?.alert_id !== null &&
+                Number(fallAlert.alert_id) !== Number(localStorage.getItem("dismissedAlertId"))
+            ) {
+                setWarningData(fallAlert);
+                setIsModalOpen2(true);
+            }
+        } catch (error) {
+            console.error("Error fetching fall alert:", error);
         }
-    } catch (error) {
-        console.error("Error fetching fall alert:", error);
-    }
-};
+    };
 
+    useEffect(() => {
+        const saved = localStorage.getItem("dismissedAlertId");
+        if (saved) {
+            setDismissedAlertId(Number(saved));
+        }
 
-  useEffect(() => {
-    const saved = localStorage.getItem("dismissedAlertId");
-    if (saved) {
-        setDismissedAlertId(Number(saved));
-    }
+        const interval = setInterval(() => {
+            getFallAlert();
+        }, 1000); 
 
-    const interval = setInterval(() => {
-        getFallAlert();
-    }, 1000); 
+        return () => clearInterval(interval);
+    }, [user_id, walkerId]);
 
-    return () => clearInterval(interval);
-}, [user_id, walkerId ]); // Faqat user_id va walkerId ga bog‘liq
-
-
-   const handleCloseModal = () => {
-    setIsModalOpen2(false);
-    if (warningData?.alert_id !== null) {
-        const alertId = Number(warningData.alert_id);
-        localStorage.setItem("dismissedAlertId", alertId);
-        console.log("Dismissed alert ID saved:", alertId);
-        console.log(warningData.timestamp)
-        setDismissedAlertId(alertId); // baribir ishlaydi, lekin bu second layer
-    }
-};
+    const handleCloseModal = () => {
+        setIsModalOpen2(false);
+        if (warningData?.alert_id !== null) {
+            const alertId = Number(warningData.alert_id);
+            localStorage.setItem("dismissedAlertId", alertId);
+            setDismissedAlertId(alertId);
+        }
+    };
 
     return (
         <div className="activity mx-auto">
@@ -151,14 +156,14 @@ function ActivityPage({ walker_id = "walker001" }) {
                             </span>
 
                             {/* 🔄 Reset tugmasi */}
-                           <div className="absolute bottom-[-150px]">
-                             <button
-                                onClick={resetTimer}
-                                className=" px-[55px] text-[27px] py-5 bg-gray-500 text-white font-bold rounded-[25px] shadow-lg hover:bg-gray-600"
-                            >
-                                초기화
-                            </button>
-                           </div>
+                            <div className="absolute bottom-[-150px]">
+                                <button
+                                    onClick={resetTimer}
+                                    className="px-[55px] text-[27px] py-5 bg-gray-500 text-white font-bold rounded-[25px] shadow-lg hover:bg-gray-600"
+                                >
+                                    초기화
+                                </button>
+                            </div>
                         </div>
 
                         {/* 다음 */}
@@ -174,23 +179,21 @@ function ActivityPage({ walker_id = "walker001" }) {
                 </div>
             </div>
 
-                   {isModalOpen2 && (
-                
-       <FallModal
-        obstacleType={warningData.timestamp}
-        obstacleId={warningData.alert_id}
-        onClose={handleCloseModal}
-        user_id={user_id}
-        walker_id={walkerId}
-    />
-)}
+            {isModalOpen2 && (
+                <FallModal
+                    obstacleType={warningData.timestamp}
+                    obstacleId={warningData.alert_id}
+                    onClose={handleCloseModal}
+                    user_id={user_id}
+                    walker_id={walkerId}
+                />
+            )}
         </div>
-
-          
     );
 }
 
 export default ActivityPage;
+
 
 
 
