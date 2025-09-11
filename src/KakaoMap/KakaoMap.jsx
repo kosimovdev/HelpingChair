@@ -158,16 +158,18 @@ const KakaoMapRedirect = () => {
   // 길찾기 tugmasi
   const openKakaoMap = () => {
     if (!startCoords || !startAddress || !endAddress) {
-      alert("Iltimos, manzillarni to‘liq kiriting.");
-      return;
+        alert("Iltimos, manzillarni to‘liq kiriting.");
+        return;
     }
     const url = `https://map.kakao.com/?sName=${encodeURIComponent(
-      startAddress
+        startAddress
     )}&sX=${startCoords.lng}&sY=${startCoords.lat}&eName=${encodeURIComponent(
-      endAddress
+        endAddress
     )}&target=walk`;
-    window.location.href = url; // current tabga redirect
-  };
+
+    window.open(url, "_blank"); // yangi tabda ochadi
+};
+
 
   // Refresh location tugmasi
   const refreshLocation = () => {
