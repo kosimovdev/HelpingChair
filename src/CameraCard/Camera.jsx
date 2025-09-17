@@ -16,8 +16,8 @@ const CameraFeed = () => {
     const [isModalOpen2, setIsModalOpen2] = useState(false);
     const [warningData, setWarningData] = useState(null);
 
-    const streamUrl1 = "https://challenged-vote-relate-probably.trycloudflare.com/?action=stream";
-    const streamUrl2 = "https://daniel-count-johnston-liz.trycloudflare.com/?action=stream"; 
+    const streamUrl1 = "https://senators-negotiations-existed-gives.trycloudflare.com/?action=stream";
+    const streamUrl2 = "https://wed-scene-between-rest.trycloudflare.com/?action=stream"; 
 
    useEffect(() => {
         if (!user_id) return navigate("/login");
