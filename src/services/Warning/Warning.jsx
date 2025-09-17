@@ -3,7 +3,7 @@ import api from "../axios.js";
 const getLatestObstacle = async (userId, walkerId) => {
     try {
         const response = await api.get(`/api/obstacle/latest?user_id=${userId}&walker_id=${walkerId}`);
-        console.log("API warning javobi:", response.data);
+        // console.log("API warning javobi:", response.data);
         if (response.data && typeof response.data.is_detected !== "undefined") {
             return response.data;
         } else {
